@@ -77,7 +77,6 @@ private val screens = listOf(
     DrawerScreens.LovedSong,
     DrawerScreens.SearchScreen,
     DrawerScreens.SettingScreen,
-    DrawerScreens.VerseScreen,
     DrawerScreens.AboutScreen
 )
 

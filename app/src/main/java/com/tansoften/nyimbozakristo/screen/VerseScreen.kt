@@ -1,17 +1,17 @@
 package com.tansoften.nyimbozakristo.screen
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,7 +25,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.tansoften.nyimbozakristo.model.SongsViewModel
-
+import kotlinx.coroutines.flow.collect
 
 @OptIn(ExperimentalPagerApi::class, androidx.compose.material.ExperimentalMaterialApi::class)
 @Composable
@@ -37,10 +37,12 @@ fun VerseScreen(
     val verse = viewModel.verses.observeAsState().value
     val pagerState = rememberPagerState()
     val context = LocalContext.current
-
-
-    var currentPage = page - 1
-
+    var title by remember {
+        mutableStateOf("")
+    }
+    var pageNo by remember {
+        mutableStateOf(0)
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
@@ -55,21 +57,29 @@ fun VerseScreen(
             }) {
                 Icon(Icons.Filled.ArrowBack, "Menu")
             }
-            Log.d("Arg", currentPage.toString())
-            verse?.get(currentPage)?.let {
-                Text(
-                    text = it.title,
-                    textAlign = TextAlign.Center
-                )
-            }
+            Text(
+                text = title,
+                textAlign = TextAlign.Center
+            )
             IconButton(onClick = {
-                //viewModel.onLikeChecked(song = song)
+                viewModel.onLikeChecked(song = verse!![pageNo])
                 Toast.makeText(context, "Hii", Toast.LENGTH_SHORT).show()
             }) {
-                Icon(Icons.TwoTone.Favorite, contentDescription = "Favorite Menu")
+                when (verse?.get(pageNo)?.like) {
+                    true -> {
+                        Icon(
+                            Icons.Rounded.Favorite,
+                            "Liked songs",
+                            tint = MaterialTheme.colors.primary
+                        )
+                    }
+                    false -> {
+                        Icon(Icons.TwoTone.Favorite, "Unliked Song")
+                    }
+                    else -> {}
+                }
             }
         }
-
 
         if (!verse.isNullOrEmpty()) {
             HorizontalPager(
@@ -78,7 +88,6 @@ fun VerseScreen(
                 modifier = Modifier
                     .fillMaxSize()
             ) { page ->
-                currentPage = page
                 val text =
                     HtmlCompat.fromHtml(
                         verse[page].verse_text,
@@ -87,8 +96,12 @@ fun VerseScreen(
                 Text(text = text.toString(), textAlign = TextAlign.Center, fontSize = 16.sp)
             }
 
-            LaunchedEffect(viewModel) {
+            LaunchedEffect(pagerState) {
                 pagerState.scrollToPage(page - 1)
+                snapshotFlow { pagerState.currentPage }.collect { page ->
+                    pageNo = page
+                    title = verse[page].title
+                }
             }
         }
     }
