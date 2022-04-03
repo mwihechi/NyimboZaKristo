@@ -8,6 +8,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Sort
+import androidx.compose.material.icons.filled.SortByAlpha
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Menu
@@ -29,11 +31,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.asLiveData
 import androidx.navigation.NavHostController
 import com.tansoften.nyimbozakristo.DrawerScreens
-import com.tansoften.nyimbozakristo.TopBar
 import com.tansoften.nyimbozakristo.item.Songs
 import com.tansoften.nyimbozakristo.model.SongsViewModel
+import com.tansoften.nyimbozakristo.storage.SortOrder
 
 
 @Composable
@@ -45,11 +48,8 @@ fun AllSongsScreen(
     val songs = viewModel.songs.observeAsState().value
 
     Column(modifier = Modifier.fillMaxSize()) {
-        TopBar(
-            title = "Home",
-            buttonIcon = Icons.Rounded.Menu,
-            onButtonClicked = { openDrawer() }
-        )
+        AppBarAllSong(onButtonClicked = { openDrawer() }, viewModel = viewModel)
+
         SearchViewText(viewModel = viewModel)
         if (!songs.isNullOrEmpty()) {
             LazyColumn(
@@ -57,6 +57,45 @@ fun AllSongsScreen(
             ) {
                 items(songs) { song ->
                     SongsCard(song = song, viewModel = viewModel, navController)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AppBarAllSong(
+    onButtonClicked: () -> Unit,
+    viewModel: SongsViewModel
+) {
+
+    val sortOrderPreference = viewModel.sortOrderPreferences.asLiveData().observeAsState().value
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .requiredHeight(50.dp)
+            .fillMaxSize()
+    ) {
+        IconButton(onClick = {
+            onButtonClicked()
+        }) {
+            Icon(Icons.Rounded.Menu, "Menu")
+        }
+
+        Text(text = "Nyimbo Za Kristo", textAlign = TextAlign.Center)
+
+        if (sortOrderPreference != null) {
+            IconButton(onClick = {
+                when (sortOrderPreference.sortOrder) {
+                    SortOrder.BY_NUMBER -> viewModel.sortOrderSelected(SortOrder.BY_NAME)
+                    SortOrder.BY_NAME -> viewModel.sortOrderSelected(SortOrder.BY_NUMBER)
+                }
+            }) {
+                when (sortOrderPreference.sortOrder) {
+                    SortOrder.BY_NUMBER -> Icon(Icons.Default.Sort, "Sort")
+                    SortOrder.BY_NAME -> Icon(Icons.Filled.SortByAlpha, "Sort by alpha")
                 }
             }
         }
@@ -76,28 +115,22 @@ fun SongsCard(song: Songs, viewModel: SongsViewModel, navController: NavHostCont
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center, modifier = Modifier
-                .fillMaxSize().padding(8.dp)
+                .fillMaxSize()
+                .padding(8.dp)
         ) {
-
-           /* Surface(
-                modifier = Modifier
-                    .size(35.dp),
-                shape = CircleShape,
-                color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f)
-            ) {*/
-                Text(
-                    text = song.songs_id.toString(),
-                    fontSize = 18.sp,
-                    textAlign = TextAlign.Center
-                )
-           // }
-
+            Text(
+                text = song.songs_id.toString(),
+                fontSize = 18.sp,
+                textAlign = TextAlign.Center
+            )
             Text(
                 text = song.title,
                 fontSize = 18.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f).padding(start = 8.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp)
             )
 
             Surface(

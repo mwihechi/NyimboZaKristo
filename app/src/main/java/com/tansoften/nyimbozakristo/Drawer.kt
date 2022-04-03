@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 
 
 const val VERSE_ARGUMENT_KEY = "currentPage"
-const val VERSE_ARGUMENT_KEY2 = "noPage"
 
 sealed class DrawerScreens(
     val route: String,

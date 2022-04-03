@@ -4,10 +4,10 @@ package com.tansoften.nyimbozakristo.model
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.tansoften.nyimbozakristo.item.Songs
 import com.tansoften.nyimbozakristo.storage.NyimboDb
 import com.tansoften.nyimbozakristo.storage.PreferencesManager
 import com.tansoften.nyimbozakristo.storage.SortOrder
-import com.tansoften.nyimbozakristo.item.Songs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -23,7 +23,8 @@ class SongsViewModel @Inject constructor(
 ) : ViewModel() {
 
     val searchQuery = MutableStateFlow("")
-    private val sortOrderPreferences = preferencesManager.preferencesFlow
+    val sortOrderPreferences = preferencesManager.preferencesFlow
+
 
     private val songFlow = combine(
         searchQuery,
@@ -38,6 +39,7 @@ class SongsViewModel @Inject constructor(
     fun sortOrderSelected(sortOrder: SortOrder) = viewModelScope.launch {
         preferencesManager.updateSortOrder(sortOrder)
     }
+
 
     fun onLikeChecked(song: Songs) = viewModelScope.launch {
         when (song.like) {
@@ -60,8 +62,5 @@ class SongsViewModel @Inject constructor(
             db.songsDao().getAllVerse(filterPreferences.sortOrder)
         }
 
-
     val verses = versesFlow.asLiveData()
-
-
 }

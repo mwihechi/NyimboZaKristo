@@ -1,6 +1,5 @@
 package com.tansoften.nyimbozakristo.screen
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -14,7 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,13 +34,8 @@ fun VerseScreen(
 ) {
     val verse = viewModel.verses.observeAsState().value
     val pagerState = rememberPagerState()
-    val context = LocalContext.current
-    var title by remember {
-        mutableStateOf("")
-    }
-    var pageNo by remember {
-        mutableStateOf(0)
-    }
+    var title by remember { mutableStateOf("") }
+    var pageNo by remember { mutableStateOf(0) }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
@@ -63,7 +56,6 @@ fun VerseScreen(
             )
             IconButton(onClick = {
                 viewModel.onLikeChecked(song = verse!![pageNo])
-                Toast.makeText(context, "Hii", Toast.LENGTH_SHORT).show()
             }) {
                 when (verse?.get(pageNo)?.like) {
                     true -> {

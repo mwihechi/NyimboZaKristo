@@ -61,6 +61,13 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 
+    //androidx.compose.material:material
+    /*Due to the very large size of this library, make sure to use R8/Proguard
+     to strip unused icons if you are including this library as a direct dependency.
+     Alternatively you can make a local copy (by copy and pasting) the icon(s)
+     you wish to keep, or using Android Studio's 'Import vector asset' feature.*/
+    implementation "androidx.compose.material:material-icons-extended:1.1.1"
+
     //room database
     implementation "androidx.room:room-runtime:2.4.2"
     kapt "androidx.room:room-compiler:2.4.2"
