@@ -20,7 +20,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 private const val TAG = "PreferencesManager"
 
 enum class SortOrder { BY_NUMBER, BY_NAME }
-enum class FontStyle { QUICK_SAND, ROBOTO }
+enum class FontStyle { QUICK_SAND, ROBOTO, POPPINS }
 
 data class FilterPreferences(val sortOrder: SortOrder)
 data class FontPreferences(val fontStyle: FontStyle)

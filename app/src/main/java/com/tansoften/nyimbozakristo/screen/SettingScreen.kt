@@ -15,6 +15,8 @@ import com.tansoften.nyimbozakristo.view_model.SettingViewModel
 @Composable
 fun SettingScreen(viewModel: SettingViewModel = hiltViewModel(), navController: NavController) {
     val setting = viewModel.fontStylePreferences.observeAsState().value
+
+
     
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
         Text(text = "Setting Screen", modifier = Modifier.clickable { navController.popBackStack() })

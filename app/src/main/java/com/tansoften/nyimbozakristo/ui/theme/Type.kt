@@ -8,6 +8,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.tansoften.nyimbozakristo.R
 
+
+
 val QuickSand = FontFamily(
     Font(resId = R.font.quicksand_regular),
     Font(resId = R.font.quicksand_bold, FontWeight.Bold)
