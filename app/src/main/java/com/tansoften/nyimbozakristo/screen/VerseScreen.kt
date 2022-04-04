@@ -15,14 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.tansoften.nyimbozakristo.model.SongsViewModel
+import com.tansoften.nyimbozakristo.ui.theme.LikeColor
+import com.tansoften.nyimbozakristo.view_model.SongsViewModel
 import kotlinx.coroutines.flow.collect
 
 @OptIn(ExperimentalPagerApi::class, androidx.compose.material.ExperimentalMaterialApi::class)
@@ -52,7 +52,8 @@ fun VerseScreen(
             }
             Text(
                 text = title,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.h1
             )
             IconButton(onClick = {
                 viewModel.onLikeChecked(song = verse!![pageNo])
@@ -62,13 +63,12 @@ fun VerseScreen(
                         Icon(
                             Icons.Rounded.Favorite,
                             "Liked songs",
-                            tint = MaterialTheme.colors.primary
+                            tint = LikeColor
                         )
                     }
                     false -> {
                         Icon(Icons.TwoTone.Favorite, "Unliked Song")
                     }
-                    else -> {}
                 }
             }
         }
@@ -78,14 +78,14 @@ fun VerseScreen(
                 count = 220,
                 state = pagerState,
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize().padding(8.dp)
             ) { page ->
                 val text =
                     HtmlCompat.fromHtml(
                         verse[page].verse_text,
                         HtmlCompat.FROM_HTML_MODE_COMPACT
                     )
-                Text(text = text.toString(), textAlign = TextAlign.Center, fontSize = 16.sp)
+                Text(text = text.toString(), textAlign = TextAlign.Center)
             }
 
             LaunchedEffect(pagerState) {

@@ -22,7 +22,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.tansoften.nyimbozakristo.item.Songs
-import com.tansoften.nyimbozakristo.model.SongsViewModel
+import com.tansoften.nyimbozakristo.view_model.SongsViewModel
 
 @Composable
 fun LovedSongsScreen(

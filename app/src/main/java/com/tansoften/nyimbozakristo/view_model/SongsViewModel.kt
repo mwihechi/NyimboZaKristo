@@ -1,4 +1,4 @@
-package com.tansoften.nyimbozakristo.model
+package com.tansoften.nyimbozakristo.view_model
 
 
 import androidx.lifecycle.ViewModel
@@ -24,7 +24,6 @@ class SongsViewModel @Inject constructor(
 
     val searchQuery = MutableStateFlow("")
     val sortOrderPreferences = preferencesManager.preferencesFlow
-
 
     private val songFlow = combine(
         searchQuery,

@@ -35,8 +35,9 @@ import androidx.lifecycle.asLiveData
 import androidx.navigation.NavHostController
 import com.tansoften.nyimbozakristo.DrawerScreens
 import com.tansoften.nyimbozakristo.item.Songs
-import com.tansoften.nyimbozakristo.model.SongsViewModel
+import com.tansoften.nyimbozakristo.view_model.SongsViewModel
 import com.tansoften.nyimbozakristo.storage.SortOrder
+import com.tansoften.nyimbozakristo.ui.theme.LikeColor
 
 
 @Composable
@@ -84,7 +85,8 @@ fun AppBarAllSong(
             Icon(Icons.Rounded.Menu, "Menu")
         }
 
-        Text(text = "Nyimbo Za Kristo", textAlign = TextAlign.Center)
+        Text(text = "Nyimbo Za Kristo", textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.h1)
 
         if (sortOrderPreference != null) {
             IconButton(onClick = {
@@ -139,14 +141,14 @@ fun SongsCard(song: Songs, viewModel: SongsViewModel, navController: NavHostCont
                     viewModel.onLikeChecked(song = song)
                 },
                 modifier = Modifier
-                    .size(30.dp)
+                    .size(25.dp)
             ) {
                 when (song.like) {
                     true -> {
                         Icon(
                             Icons.Rounded.Favorite,
                             "Liked songs",
-                            tint = MaterialTheme.colors.primary
+                            tint = LikeColor
                         )
                     }
                     false -> {
@@ -199,7 +201,7 @@ fun SearchViewText(viewModel: SongsViewModel) {
             maxLines = 1,
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             placeholder = { Text(text = "tafuta kwa maneno au namba") },
-            textStyle = MaterialTheme.typography.subtitle1,
+            textStyle = MaterialTheme.typography.body1,
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
