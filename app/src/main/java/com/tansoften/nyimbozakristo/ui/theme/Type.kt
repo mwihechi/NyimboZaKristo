@@ -14,20 +14,25 @@ val QuickSand = FontFamily(
 )
 
 val Roboto = FontFamily(
-    Font(resId = R.font.roboto_bold),
-    Font(resId = R.font.roboto_bold)
+    Font(resId = R.font.roboto_regular),
+    Font(resId = R.font.roboto_bold, FontWeight.Bold)
+)
+
+val Poppins = FontFamily(
+    Font(resId = R.font.poppins_regular),
+    Font(resId = R.font.poppins_bold, FontWeight.Bold)
 )
 
 // Set of Material typography styles to start with
 val Typography = Typography(
     body1 = TextStyle(
-        fontFamily = QuickSand,
+        fontFamily = Poppins,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
 
     h1 = TextStyle(
-        fontFamily = QuickSand,
+        fontFamily = Poppins,
         fontWeight = FontWeight.Bold,
         fontSize = 18.sp
     ),

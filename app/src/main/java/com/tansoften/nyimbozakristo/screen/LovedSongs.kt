@@ -5,9 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -56,7 +57,9 @@ fun LovedSongsScreen(
                     centerVerticallyTo(parent)
                     start.linkTo(arrowIcon.end)
                     end.linkTo(parent.end)
-                })
+                },
+                style = MaterialTheme.typography.h1
+            )
         }
         Content(songs = songs, viewModel = viewModel, navController = navController)
     }
@@ -80,11 +83,12 @@ fun Content(songs: List<Songs>?, viewModel: SongsViewModel, navController: NavHo
             }
             songs.isNotEmpty() -> {
                 LazyColumn {
-                    items(songs) { song ->
+                    itemsIndexed(songs) {index, song ->
                         SongsCard(
                             song = song,
                             viewModel = viewModel,
-                            navController = navController
+                            navController = navController,
+                            index = index
                         )
                     }
                 }
