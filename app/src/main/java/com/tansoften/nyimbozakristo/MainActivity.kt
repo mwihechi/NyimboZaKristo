@@ -80,7 +80,7 @@ fun AppMainScreen() {
 
                 composable(DrawerScreens.LovedSong.route) { LovedSongsScreen(navController = navController) }
 
-                composable(DrawerScreens.SearchScreen.route) { SearchScreen(navController = navController) }
+                composable(DrawerScreens.CategoryScreen.route) { CategoryScreen(navController = navController) }
 
                 composable(DrawerScreens.SettingScreen.route) { SettingScreen(navController = navController) }
 

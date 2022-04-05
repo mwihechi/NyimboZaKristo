@@ -10,7 +10,7 @@ import androidx.navigation.NavHostController
 
 
 @Composable
-fun SearchScreen(navController: NavHostController) {
+fun CategoryScreen(navController: NavHostController) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text(text = "Search Screen")
     }

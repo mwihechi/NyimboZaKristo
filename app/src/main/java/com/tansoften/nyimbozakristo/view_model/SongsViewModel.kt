@@ -62,4 +62,10 @@ class SongsViewModel @Inject constructor(
         }
 
     val verses = versesFlow.asLiveData()
+    val fontSize = preferencesManager.fontSizeFlow.asLiveData()
+
+    //update font size
+    fun updateFontSize(fontSize: Float) = viewModelScope.launch {
+        preferencesManager.updateFontSize(fontSize)
+    }
 }

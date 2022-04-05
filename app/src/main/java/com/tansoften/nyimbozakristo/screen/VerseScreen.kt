@@ -1,21 +1,27 @@
 package com.tansoften.nyimbozakristo.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.FormatSize
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.asLiveData
@@ -28,6 +34,7 @@ import com.tansoften.nyimbozakristo.storage.SortOrder
 import com.tansoften.nyimbozakristo.ui.theme.LikeColor
 import com.tansoften.nyimbozakristo.view_model.SongsViewModel
 import kotlinx.coroutines.flow.collect
+import kotlin.math.roundToInt
 
 @Composable
 fun VerseScreen(
@@ -38,28 +45,33 @@ fun VerseScreen(
 
     val verse = viewModel.verses.observeAsState().value
     val sortOrderPreference = viewModel.sortOrderPreferences.asLiveData().observeAsState().value
+    val font = viewModel.fontSize.observeAsState().value
 
 
-    if (sortOrderPreference != null && verse != null) {
+
+    if (sortOrderPreference != null && verse != null && font != null) {
+        val fontSize = (font*100).roundToInt()
         when (sortOrderPreference.sortOrder) {
             SortOrder.BY_NUMBER -> {
                 Content(
                     navController = navController,
                     page = page,
                     viewModel = viewModel,
-                    verse = verse
+                    verse = verse,
+                    fontSize = fontSize
                 )
             }
 
             SortOrder.BY_NAME -> {
-                val songSorted = verse.sortedBy { songs->
+                val songSorted = verse.sortedBy { songs ->
                     songs.title
                 }
                 Content(
                     navController = navController,
                     page = page,
                     viewModel = viewModel,
-                    verse = songSorted
+                    verse = songSorted,
+                    fontSize = fontSize
                 )
             }
         }
@@ -75,46 +87,111 @@ fun Content(
     page: Int,
     viewModel: SongsViewModel,
     verse: List<Songs>,
+    fontSize: Int,
 ) {
     val pagerState = rememberPagerState()
-    var title by remember { mutableStateOf("") }
     var pageNo by remember { mutableStateOf(0) }
+    val openDialogCustom = remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize(), verticalArrangement = Arrangement.Center
+    ) {
+
+        ConstraintLayout(
             modifier = Modifier
-                .requiredHeight(50.dp)
-                .fillMaxSize()
+                .fillMaxWidth()
+                .height(40.dp)
         ) {
+            val (backArrowIcon, shareIcon, fontSizeIcon, lovedIcon, titleText) = createRefs()
+
             IconButton(onClick = {
                 navController.popBackStack()
+            }, modifier = Modifier.constrainAs(backArrowIcon) {
+                start.linkTo(parent.start)
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
             }) {
                 Icon(Icons.Filled.ArrowBack, "Menu")
             }
-            Text(
-                text = "${verse[pageNo].songs_id} ${verse[pageNo].title}",
-                textAlign = TextAlign.Center,
-                fontSize = 16.sp,
-                style = MaterialTheme.typography.h1
-            )
+
+            Text(text = "Nyimbo Za Kristo", modifier = Modifier.constrainAs(titleText) {
+                start.linkTo(backArrowIcon.end)
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
+            }, style = MaterialTheme.typography.h1)
+
             IconButton(onClick = {
-                viewModel.onLikeChecked(song = verse[pageNo])
+                Toast.makeText(
+                    context,
+                    "Ipo kwenye matengenezo",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }, modifier = Modifier.constrainAs(shareIcon) {
+                end.linkTo(parent.end)
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
             }) {
+                Icon(Icons.Filled.Share, "Share Icon")
+            }
+
+            IconButton(onClick = { viewModel.onLikeChecked(song = verse[pageNo]) },
+                modifier = Modifier.constrainAs(lovedIcon) {
+                    end.linkTo(shareIcon.start)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                }) {
                 when (verse[pageNo].like) {
-                    true -> {
-                        Icon(
-                            Icons.Rounded.Favorite,
-                            "Liked songs",
-                            tint = LikeColor
-                        )
-                    }
-                    false -> {
-                        Icon(Icons.TwoTone.Favorite, "Unliked Song")
-                    }
+                    true -> Icon(Icons.Rounded.Favorite, "Liked songs", tint = LikeColor)
+                    false -> Icon(Icons.TwoTone.Favorite, "Unliked Song")
                 }
             }
+
+            IconButton(
+                onClick = { openDialogCustom.value = true },
+                modifier = Modifier.constrainAs(fontSizeIcon) {
+                    end.linkTo(lovedIcon.start)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                }) {
+                Icon(Icons.Filled.FormatSize, "Font size")
+            }
+        }
+
+        /* Row(
+             verticalAlignment = Alignment.CenterVertically,
+             horizontalArrangement = Arrangement.SpaceBetween,
+             modifier = Modifier
+                 .requiredHeight(50.dp)
+                 .fillMaxSize()
+         ) {
+             IconButton(onClick = {
+                 navController.popBackStack()
+             }) {
+                 Icon(Icons.Filled.ArrowBack, "Menu")
+             }
+             Text(
+                 text = "${verse[pageNo].songs_id} ${verse[pageNo].title}",
+                 textAlign = TextAlign.Center,
+                 fontSize = 16.sp,
+                 style = MaterialTheme.typography.h1
+             )
+             IconButton(onClick = { openDialogCustom.value = true }) {
+                 Icon(Icons.Filled.FormatSize, "Font size")
+             }
+             IconButton(onClick = { viewModel.onLikeChecked(song = verse[pageNo]) }) {
+                 when (verse[pageNo].like) {
+                     true -> Icon(Icons.Rounded.Favorite, "Liked songs", tint = LikeColor)
+                     false -> Icon(Icons.TwoTone.Favorite, "Unliked Song")
+                 }
+             }
+         }*/
+
+        // for opening dialog
+        if (openDialogCustom.value) {
+            FontSizeDialog(openDialogCustom = openDialogCustom, viewModel = viewModel)
         }
 
 
@@ -130,7 +207,12 @@ fun Content(
                     verse[page].verse_text,
                     HtmlCompat.FROM_HTML_MODE_COMPACT
                 )
-            Text(text = text.toString(), textAlign = TextAlign.Center)
+            Text(
+                text = text.toString(),
+                textAlign = TextAlign.Center,
+                fontSize = fontSize.sp,
+                modifier = Modifier.verticalScroll(rememberScrollState())
+            )
         }
 
         LaunchedEffect(pagerState) {
@@ -141,3 +223,4 @@ fun Content(
         }
     }
 }
+

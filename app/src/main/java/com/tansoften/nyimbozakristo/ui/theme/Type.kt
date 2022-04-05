@@ -28,13 +28,13 @@ val Poppins = FontFamily(
 // Set of Material typography styles to start with
 val Typography = Typography(
     body1 = TextStyle(
-        fontFamily = Poppins,
+        fontFamily = QuickSand,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
 
     h1 = TextStyle(
-        fontFamily = Poppins,
+        fontFamily = QuickSand,
         fontWeight = FontWeight.Bold,
         fontSize = 18.sp
     ),

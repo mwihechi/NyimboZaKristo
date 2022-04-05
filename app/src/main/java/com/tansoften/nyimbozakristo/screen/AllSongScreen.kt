@@ -126,7 +126,7 @@ fun SongsCard(song: Songs, viewModel: SongsViewModel, navController: NavHostCont
         ) {
             Text(
                 text = song.songs_id.toString(),
-                fontSize = 18.sp,
+                fontSize = 16.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .background(MaterialTheme.colors.background, shape = CircleShape)
@@ -134,7 +134,7 @@ fun SongsCard(song: Songs, viewModel: SongsViewModel, navController: NavHostCont
             )
             Text(
                 text = song.title,
-                fontSize = 18.sp,
+                fontSize = 16.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier

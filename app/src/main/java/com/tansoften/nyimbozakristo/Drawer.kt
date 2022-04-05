@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
-
 const val VERSE_ARGUMENT_KEY = "currentPage"
 
 sealed class DrawerScreens(
@@ -27,41 +26,23 @@ sealed class DrawerScreens(
         icon = Icons.Rounded.Home
     )
 
+
     object LovedSong : DrawerScreens(
         route = "loved_song_screen",
         title = "Nyimbo Pendwa",
         icon = Icons.Rounded.Favorite
     )
 
-    object SettingScreen : DrawerScreens(
-        route = "setting_screen",
-        title = "Mipangilio",
-        icon = Icons.Rounded.Settings
-    )
 
-    object AboutScreen : DrawerScreens(
-        route = "about_screen",
-        title = "Kuhusu",
-        icon = Icons.Rounded.Info
-    )
+    object SettingScreen : DrawerScreens(route = "setting_screen", title = "Mipangilio", icon = Icons.Rounded.Settings)
 
-    object ShareScreen : DrawerScreens(
-        route = "share_screen",
-        title = "Sambaza app",
-        icon = Icons.Rounded.Share
-    )
+    object AboutScreen : DrawerScreens(route = "about_screen", title = "Kuhusu", icon = Icons.Rounded.Info)
 
-    object SearchScreen : DrawerScreens(
-        route = "search_screen",
-        title = "Tafuta",
-        icon = Icons.Rounded.Search
-    )
+    object ShareScreen : DrawerScreens(route = "share_screen", title = "Sambaza app", icon = Icons.Rounded.Share)
 
-    object VerseScreen : DrawerScreens(
-        route = "verse_screen/{$VERSE_ARGUMENT_KEY}",
-        title = "Verses Screen",
-        icon = Icons.Rounded.FavoriteBorder
-    ) {
+    object CategoryScreen : DrawerScreens(route = "category_screen", title = "Yaliyomo", icon = Icons.Rounded.Category)
+
+    object VerseScreen : DrawerScreens(route = "verse_screen/{$VERSE_ARGUMENT_KEY}", title = "Verses Screen", icon = Icons.Rounded.FavoriteBorder) {
         fun passPage(currentPage: Int): String {
             return this.route.replace(
                 oldValue = "{$VERSE_ARGUMENT_KEY}",
@@ -74,7 +55,7 @@ sealed class DrawerScreens(
 private val screens = listOf(
     DrawerScreens.AllSongScreen,
     DrawerScreens.LovedSong,
-    DrawerScreens.SearchScreen,
+    DrawerScreens.CategoryScreen,
     DrawerScreens.SettingScreen,
     DrawerScreens.AboutScreen
 )
