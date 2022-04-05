@@ -14,13 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.tansoften.nyimbozakristo.view_model.SongsViewModel
+import com.tansoften.nyimbozakristo.view_model.VersesViewModel
 import kotlin.math.roundToInt
 
 @Composable
 fun FontSizeDialog(
     openDialogCustom: MutableState<Boolean>,
-    viewModel: SongsViewModel
+    viewModel: VersesViewModel
 ) {
     Dialog(onDismissRequest = { openDialogCustom.value = false }) {
 
@@ -35,7 +35,7 @@ fun FontSizeDialog(
 fun CustomDialogUI(
     modifier: Modifier = Modifier,
     openDialogCustom: MutableState<Boolean>,
-    viewModel: SongsViewModel
+    viewModel: VersesViewModel
 ) {
     val fontSize = viewModel.fontSize.observeAsState().value
 

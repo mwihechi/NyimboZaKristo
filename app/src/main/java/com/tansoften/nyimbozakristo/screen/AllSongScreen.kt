@@ -126,7 +126,7 @@ fun SongsCard(song: Songs, viewModel: SongsViewModel, navController: NavHostCont
         ) {
             Text(
                 text = song.songs_id.toString(),
-                fontSize = 16.sp,
+                fontSize = 18.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .background(MaterialTheme.colors.background, shape = CircleShape)
@@ -134,7 +134,7 @@ fun SongsCard(song: Songs, viewModel: SongsViewModel, navController: NavHostCont
             )
             Text(
                 text = song.title,
-                fontSize = 16.sp,
+                fontSize = 18.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
@@ -148,7 +148,7 @@ fun SongsCard(song: Songs, viewModel: SongsViewModel, navController: NavHostCont
                     viewModel.onLikeChecked(song = song)
                 },
                 modifier = Modifier
-                    .size(25.dp)
+                    .size(30.dp)
             ) {
                 when (song.like) {
                     true -> {

@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -32,7 +31,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.tansoften.nyimbozakristo.item.Songs
 import com.tansoften.nyimbozakristo.storage.SortOrder
 import com.tansoften.nyimbozakristo.ui.theme.LikeColor
-import com.tansoften.nyimbozakristo.view_model.SongsViewModel
+import com.tansoften.nyimbozakristo.view_model.VersesViewModel
 import kotlinx.coroutines.flow.collect
 import kotlin.math.roundToInt
 
@@ -40,11 +39,11 @@ import kotlin.math.roundToInt
 fun VerseScreen(
     navController: NavController,
     page: Int,
-    viewModel: SongsViewModel = hiltViewModel()
+    viewModel: VersesViewModel = hiltViewModel()
 ) {
 
     val verse = viewModel.verses.observeAsState().value
-    val sortOrderPreference = viewModel.sortOrderPreferences.asLiveData().observeAsState().value
+    val sortOrderPreference = viewModel.sortOrder.observeAsState().value
     val font = viewModel.fontSize.observeAsState().value
 
 
@@ -85,7 +84,7 @@ fun VerseScreen(
 fun Content(
     navController: NavController,
     page: Int,
-    viewModel: SongsViewModel,
+    viewModel: VersesViewModel,
     verse: List<Songs>,
     fontSize: Int,
 ) {

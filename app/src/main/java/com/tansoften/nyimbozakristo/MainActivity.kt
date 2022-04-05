@@ -9,12 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.tansoften.nyimbozakristo.screen.*
 import com.tansoften.nyimbozakristo.ui.theme.NyimboZaKristoTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -68,39 +63,7 @@ fun AppMainScreen() {
                 )
             }
         ) {
-            NavHost(
-                navController = navController,
-                startDestination = DrawerScreens.AllSongScreen.route
-            ) {
-                composable(DrawerScreens.AllSongScreen.route) {
-                    AllSongsScreen(openDrawer = {
-                        openDrawer()
-                    }, navController = navController)
-                }
-
-                composable(DrawerScreens.LovedSong.route) { LovedSongsScreen(navController = navController) }
-
-                composable(DrawerScreens.CategoryScreen.route) { CategoryScreen(navController = navController) }
-
-                composable(DrawerScreens.SettingScreen.route) { SettingScreen(navController = navController) }
-
-                composable(DrawerScreens.AboutScreen.route) { AboutScreen(navController = navController) }
-
-                composable(
-                    route = DrawerScreens.VerseScreen.route,
-                    arguments = listOf(navArgument(VERSE_ARGUMENT_KEY) {
-                        type = NavType.IntType
-                    })
-                ) {
-                    VerseScreen(
-                        navController = navController,
-                        it.arguments!!.getInt(VERSE_ARGUMENT_KEY)
-                    )
-                }
-
-                composable(DrawerScreens.ShareScreen.route) {}
-
-            }
+            NavigationHost(navController = navController, openDrawer = { openDrawer() })
         }
     }
 }
