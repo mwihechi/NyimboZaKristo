@@ -39,7 +39,6 @@ fun CustomDialogUI(
 ) {
     val fontSize = viewModel.fontSize.observeAsState().value
 
-
     Card(
         shape = RoundedCornerShape(10.dp),
         // modifier = modifier.size(280.dp, 240.dp)
@@ -57,9 +56,8 @@ fun CustomDialogUI(
                 modifier = modifier.padding(vertical = 5.dp)
             )
 
-
             //slider used to set font size
-            if (fontSize != null){
+            if (fontSize != null) {
                 val sliderPosition = remember { mutableStateOf(fontSize) }
                 val currentFontSize = (sliderPosition.value * 100).roundToInt()
                 Text(text = currentFontSize.toString(), style = MaterialTheme.typography.body1)
@@ -74,20 +72,10 @@ fun CustomDialogUI(
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(top = 10.dp),
-                horizontalArrangement = Arrangement.SpaceAround
+                    .padding(top = 10.dp, end = 10.dp),
+                horizontalArrangement = Arrangement.End
             ) {
 
-
-                TextButton(onClick = { openDialogCustom.value = false }) {
-                    Text(
-                        text = "Sitisha",
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.body1,
-                        color = MaterialTheme.colors.onBackground,
-                        modifier = Modifier.padding(vertical = 5.dp)
-                    )
-                }
 
                 TextButton(onClick = { openDialogCustom.value = false }) {
                     Text(

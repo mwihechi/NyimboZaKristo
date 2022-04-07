@@ -8,11 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.tansoften.nyimbozakristo.R
 
 @Composable
 fun AboutScreen(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "About Screen", modifier = Modifier.clickable { navController.popBackStack() })
+        Text(text = "Nyimbo Za Kristo.")
+        Text(text = "Toleo Namba: 1.0.0")
     }
 }
 

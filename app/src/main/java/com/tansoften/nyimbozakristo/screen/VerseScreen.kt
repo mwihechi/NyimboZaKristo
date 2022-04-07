@@ -1,6 +1,7 @@
 package com.tansoften.nyimbozakristo.screen
 
-import android.widget.Toast
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -28,6 +29,7 @@ import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.tansoften.nyimbozakristo.APP_URL
 import com.tansoften.nyimbozakristo.item.Songs
 import com.tansoften.nyimbozakristo.storage.SortOrder
 import com.tansoften.nyimbozakristo.ui.theme.LikeColor
@@ -47,9 +49,8 @@ fun VerseScreen(
     val font = viewModel.fontSize.observeAsState().value
 
 
-
     if (sortOrderPreference != null && verse != null && font != null) {
-        val fontSize = (font*100).roundToInt()
+        val fontSize = (font * 100).roundToInt()
         when (sortOrderPreference.sortOrder) {
             SortOrder.BY_NUMBER -> {
                 Content(
@@ -123,11 +124,7 @@ fun Content(
             }, style = MaterialTheme.typography.h1)
 
             IconButton(onClick = {
-                Toast.makeText(
-                    context,
-                    "Ipo kwenye matengenezo",
-                    Toast.LENGTH_SHORT
-                ).show()
+                shareVerses(verse[pageNo], context)
             }, modifier = Modifier.constrainAs(shareIcon) {
                 end.linkTo(parent.end)
                 top.linkTo(parent.top)
@@ -221,5 +218,19 @@ fun Content(
             }
         }
     }
+}
+
+
+fun shareVerses(songs: Songs, context: Context) {
+    val text = HtmlCompat.fromHtml(songs.verse_text, HtmlCompat.FROM_HTML_MODE_COMPACT)
+    val appText = "Pakua app yetu ya Nyimbo Za Kristo kwa Nyimbo zaidi. \r\n $APP_URL"
+
+    val sendIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, "${songs.songs_id}: ${songs.title}\r\n \r\n$text\r\n\r\n$appText")
+        type = "text/plain"
+    }
+    val shareIntent = Intent.createChooser(sendIntent, null)
+    context.startActivity(shareIntent)
 }
 
