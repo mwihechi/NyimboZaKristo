@@ -148,7 +148,7 @@ fun SongsCard(song: Songs, viewModel: SongsViewModel, navController: NavHostCont
                     viewModel.onLikeChecked(song = song)
                 },
                 modifier = Modifier
-                    .size(30.dp)
+                    .size(26.dp)
             ) {
                 when (song.like) {
                     true -> {

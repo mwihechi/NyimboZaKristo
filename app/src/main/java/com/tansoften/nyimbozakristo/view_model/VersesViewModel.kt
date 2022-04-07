@@ -32,6 +32,7 @@ class VersesViewModel @Inject constructor(
     val verses = versesFlow.asLiveData()
     val fontSize = preferencesManager.fontSizeFlow.asLiveData()
     val sortOrder = sortOrderPreferences.asLiveData()
+    val isScreenOn = preferencesManager.isScreenOnFlow.asLiveData()
 
 
     fun onLikeChecked(song: Songs) = viewModelScope.launch {
@@ -45,4 +46,6 @@ class VersesViewModel @Inject constructor(
     fun updateFontSize(fontSize: Float) = viewModelScope.launch {
         preferencesManager.updateFontSize(fontSize)
     }
+
+
 }

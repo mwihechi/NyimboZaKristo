@@ -27,6 +27,7 @@ data class FontPreferences(val fontStyle: FontStyle)
 @Singleton
 class PreferencesManager @Inject constructor(@ApplicationContext private val context: Context) {
 
+
     // Retrieving search sort order
     val preferencesFlow = context.dataStore.data.catch { exception ->
         if (exception is IOException) {
@@ -57,6 +58,7 @@ class PreferencesManager @Inject constructor(@ApplicationContext private val con
         FontPreferences(fontStyle = fontStyle)
     }
 
+        // retrieving font size
     val fontSizeFlow: Flow<Float> = context.dataStore.data
         .catch { exception ->
             if (exception is IOException) {
@@ -69,6 +71,21 @@ class PreferencesManager @Inject constructor(@ApplicationContext private val con
         .map { preferences ->
             preferences[PreferencesKeys.FONT_SIZE] ?: 0.16F
         }
+
+    // retrieving value of isScreeOn
+    val isScreenOnFlow = context.dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                Log.e(TAG, "Error while reading preferences ", exception)
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preference ->
+            preference[PreferencesKeys.KEEP_SCREEN_ON] ?: false
+        }
+
 
     // updating value of sort order
     suspend fun updateSortOrder(sortOrder: SortOrder) {
@@ -91,11 +108,18 @@ class PreferencesManager @Inject constructor(@ApplicationContext private val con
         }
     }
 
+    // updating keep screen on
+    suspend fun updateScreenIsOn(isScreenOn: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[PreferencesKeys.KEEP_SCREEN_ON] = isScreenOn
+        }
+    }
 
     // storing preference keys
     private object PreferencesKeys {
         val SORT_ORDER = stringPreferencesKey("sort_order")
         val FONT_STYLE = stringPreferencesKey("font_style")
         val FONT_SIZE = floatPreferencesKey("font_size")
+        val KEEP_SCREEN_ON = booleanPreferencesKey("keep_screen_on")
     }
 }

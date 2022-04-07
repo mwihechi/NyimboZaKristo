@@ -5,6 +5,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.tansoften.nyimbozakristo.storage.FontStyle
 import com.tansoften.nyimbozakristo.storage.PreferencesManager
+import com.tansoften.nyimbozakristo.storage.SortOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -12,14 +13,25 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(private val preferencesManager: PreferencesManager) :
     ViewModel() {
-    val fontStylePreferences = preferencesManager.fontPreferencesFlow.asLiveData()
-    val fontSize = preferencesManager.fontSizeFlow.asLiveData()
 
+    val fontSize = preferencesManager.fontSizeFlow.asLiveData()
     fun updateFontSize(fontSize: Float) = viewModelScope.launch {
         preferencesManager.updateFontSize(fontSize = fontSize)
     }
 
+
+    val fontStylePreferences = preferencesManager.fontPreferencesFlow.asLiveData()
     fun updateFontStyle(fontStyle: FontStyle) = viewModelScope.launch {
         preferencesManager.updateFontStyle(fontStyle)
+    }
+
+    val isScreenOn = preferencesManager.isScreenOnFlow.asLiveData()
+    fun updateIsScreenOn(isScreenOn : Boolean) = viewModelScope.launch {
+        preferencesManager.updateScreenIsOn(isScreenOn = isScreenOn)
+    }
+
+    val sortOrder = preferencesManager.preferencesFlow.asLiveData()
+    fun updateSortOrder(sortOrder: SortOrder) = viewModelScope.launch {
+        preferencesManager.updateSortOrder(sortOrder = sortOrder)
     }
 }

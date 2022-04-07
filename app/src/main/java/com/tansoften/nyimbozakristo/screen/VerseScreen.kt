@@ -47,6 +47,12 @@ fun VerseScreen(
     val verse = viewModel.verses.observeAsState().value
     val sortOrderPreference = viewModel.sortOrder.observeAsState().value
     val font = viewModel.fontSize.observeAsState().value
+    val isScreenOn = viewModel.isScreenOn.observeAsState().value
+
+    // keep screen on
+    if (isScreenOn == true){
+        KeepScreenOn()
+    }
 
 
     if (sortOrderPreference != null && verse != null && font != null) {
@@ -155,35 +161,6 @@ fun Content(
                 Icon(Icons.Filled.FormatSize, "Font size")
             }
         }
-
-        /* Row(
-             verticalAlignment = Alignment.CenterVertically,
-             horizontalArrangement = Arrangement.SpaceBetween,
-             modifier = Modifier
-                 .requiredHeight(50.dp)
-                 .fillMaxSize()
-         ) {
-             IconButton(onClick = {
-                 navController.popBackStack()
-             }) {
-                 Icon(Icons.Filled.ArrowBack, "Menu")
-             }
-             Text(
-                 text = "${verse[pageNo].songs_id} ${verse[pageNo].title}",
-                 textAlign = TextAlign.Center,
-                 fontSize = 16.sp,
-                 style = MaterialTheme.typography.h1
-             )
-             IconButton(onClick = { openDialogCustom.value = true }) {
-                 Icon(Icons.Filled.FormatSize, "Font size")
-             }
-             IconButton(onClick = { viewModel.onLikeChecked(song = verse[pageNo]) }) {
-                 when (verse[pageNo].like) {
-                     true -> Icon(Icons.Rounded.Favorite, "Liked songs", tint = LikeColor)
-                     false -> Icon(Icons.TwoTone.Favorite, "Unliked Song")
-                 }
-             }
-         }*/
 
         // for opening dialog
         if (openDialogCustom.value) {
