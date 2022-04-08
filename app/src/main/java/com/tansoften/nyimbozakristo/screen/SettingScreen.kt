@@ -202,7 +202,7 @@ fun SortOrderCard(viewModel: SettingViewModel) {
                 Switch(checked = checkedState, onCheckedChange = {
                     checkedState = it
                     viewModel.updateSortOrder(
-                        when(sortOrder.sortOrder){
+                        when (sortOrder.sortOrder) {
                             SortOrder.BY_NAME -> SortOrder.BY_NUMBER
                             SortOrder.BY_NUMBER -> SortOrder.BY_NAME
                         }

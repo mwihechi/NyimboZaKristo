@@ -34,7 +34,6 @@ class VersesViewModel @Inject constructor(
     val sortOrder = sortOrderPreferences.asLiveData()
     val isScreenOn = preferencesManager.isScreenOnFlow.asLiveData()
 
-
     fun onLikeChecked(song: Songs) = viewModelScope.launch {
         when (song.like) {
             true -> db.songsDao().update(song.copy(like = false))
@@ -46,6 +45,4 @@ class VersesViewModel @Inject constructor(
     fun updateFontSize(fontSize: Float) = viewModelScope.launch {
         preferencesManager.updateFontSize(fontSize)
     }
-
-
 }

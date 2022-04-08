@@ -2,6 +2,7 @@ package com.tansoften.nyimbozakristo.screen
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -26,6 +27,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.room.FtsOptions
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -36,6 +38,7 @@ import com.tansoften.nyimbozakristo.ui.theme.LikeColor
 import com.tansoften.nyimbozakristo.view_model.VersesViewModel
 import kotlinx.coroutines.flow.collect
 import kotlin.math.roundToInt
+
 
 @Composable
 fun VerseScreen(
@@ -50,7 +53,7 @@ fun VerseScreen(
     val isScreenOn = viewModel.isScreenOn.observeAsState().value
 
     // keep screen on
-    if (isScreenOn == true){
+    if (isScreenOn == true) {
         KeepScreenOn()
     }
 
@@ -100,18 +103,18 @@ fun Content(
     val openDialogCustom = remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-
     Column(
         modifier = Modifier
-            .fillMaxSize(), verticalArrangement = Arrangement.Center
+            .fillMaxSize(), verticalArrangement = Arrangement.Top
     ) {
 
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp)
+                .background(MaterialTheme.colors.primary)
         ) {
-            val (backArrowIcon, shareIcon, fontSizeIcon, lovedIcon, titleText) = createRefs()
+            val (backArrowIcon, shareIcon, fontSizeIcon, lovedIcon, textAppName, titleText) = createRefs()
 
             IconButton(onClick = {
                 navController.popBackStack()
@@ -123,7 +126,7 @@ fun Content(
                 Icon(Icons.Filled.ArrowBack, "Menu")
             }
 
-            Text(text = "Nyimbo Za Kristo", modifier = Modifier.constrainAs(titleText) {
+            Text(text = "Nyimbo Za Kristo", modifier = Modifier.constrainAs(textAppName) {
                 start.linkTo(backArrowIcon.end)
                 top.linkTo(parent.top)
                 bottom.linkTo(parent.bottom)
@@ -162,6 +165,16 @@ fun Content(
             }
         }
 
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = "${verse[pageNo].songs_id}: ${verse[pageNo].title}",
+            textAlign = TextAlign.Center,
+            color = LikeColor,
+            style = MaterialTheme.typography.h1,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+
         // for opening dialog
         if (openDialogCustom.value) {
             FontSizeDialog(openDialogCustom = openDialogCustom, viewModel = viewModel)
@@ -173,18 +186,15 @@ fun Content(
             state = pagerState,
             modifier = Modifier
                 .fillMaxSize()
+                .background(MaterialTheme.colors.error)
                 .padding(8.dp)
         ) { page ->
             val text =
-                HtmlCompat.fromHtml(
-                    verse[page].verse_text,
-                    HtmlCompat.FROM_HTML_MODE_COMPACT
-                )
+                HtmlCompat.fromHtml(verse[page].verse_text, HtmlCompat.FROM_HTML_MODE_COMPACT)
             Text(
                 text = text.toString(),
-                textAlign = TextAlign.Center,
                 fontSize = fontSize.sp,
-                modifier = Modifier.verticalScroll(rememberScrollState())
+                modifier = Modifier.background(MaterialTheme.colors.primary).verticalScroll(rememberScrollState())
             )
         }
 
@@ -204,10 +214,12 @@ fun shareVerses(songs: Songs, context: Context) {
 
     val sendIntent: Intent = Intent().apply {
         action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TEXT, "${songs.songs_id}: ${songs.title}\r\n \r\n$text\r\n\r\n$appText")
+        putExtra(
+            Intent.EXTRA_TEXT,
+            "${songs.songs_id}: ${songs.title}\r\n \r\n$text\r\n\r\n$appText"
+        )
         type = "text/plain"
     }
     val shareIntent = Intent.createChooser(sendIntent, null)
     context.startActivity(shareIntent)
 }
-
