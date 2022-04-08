@@ -1,5 +1,6 @@
 package com.tansoften.nyimbozakristo.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -8,7 +9,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -50,14 +50,15 @@ fun SettingScreen(viewModel: SettingViewModel = hiltViewModel(), navController: 
             )
         }
 
-        // Font size card
-        FontSizeCard(viewModel = viewModel)
 
         // Screen stay awake card
         KeepScreenOnCard(viewModel = viewModel)
 
         // Sort order card
         SortOrderCard(viewModel = viewModel)
+
+        // Font size card
+        FontSizeCard(viewModel = viewModel)
     }
 }
 
@@ -70,16 +71,25 @@ fun FontSizeCard(viewModel: SettingViewModel) {
         modifier = Modifier.padding(4.dp)
     ) {
         ConstraintLayout {
-            val (textTitle, textFontSize, slider) = createRefs()
+            val (textTitle, textFontSize, slider, textDesc) = createRefs()
 
             Text(
                 text = "Ukubwa wa maneno",
-                fontWeight = FontWeight.Black,
                 modifier = Modifier.constrainAs(textTitle) {
                     start.linkTo(parent.start, margin = 8.dp)
                     top.linkTo(parent.top)
                 }
             )
+
+            Text(
+                text = "Ongeza au punguza ukubwa wa maneno kadili ya mahitaji yako.",
+                style = MaterialTheme.typography.body2,
+                modifier = Modifier.constrainAs(textDesc) {
+                    start.linkTo(parent.start, margin = 8.dp)
+                    top.linkTo(textTitle.bottom)
+                }
+            )
+
 
             //slider used to set font size
             if (fontSize != null) {
@@ -102,7 +112,7 @@ fun FontSizeCard(viewModel: SettingViewModel) {
                         viewModel.updateFontSize(sliderPosition.value)
                     },
                     modifier = Modifier.constrainAs(slider) {
-                        top.linkTo(textTitle.bottom)
+                        top.linkTo(textDesc.bottom)
                         centerHorizontallyTo(parent)
                     }
                 )
@@ -126,7 +136,6 @@ fun KeepScreenOnCard(viewModel: SettingViewModel) {
 
             Text(
                 text = "Wezesha mwanga kutozima",
-                fontWeight = FontWeight.Black,
                 modifier = Modifier.constrainAs(textTitle) {
                     start.linkTo(parent.start, margin = 8.dp)
                     top.linkTo(parent.top)
@@ -135,6 +144,7 @@ fun KeepScreenOnCard(viewModel: SettingViewModel) {
 
             Text(
                 text = text,
+                style = MaterialTheme.typography.body2,
                 modifier = Modifier.constrainAs(textExplanation) {
                     start.linkTo(parent.start, margin = 8.dp)
                     top.linkTo(textTitle.bottom)
@@ -174,7 +184,6 @@ fun SortOrderCard(viewModel: SettingViewModel) {
 
             Text(
                 text = "Aina ya mpangilio",
-                fontWeight = FontWeight.Black,
                 modifier = Modifier.constrainAs(textTitle) {
                     start.linkTo(parent.start, margin = 8.dp)
                     top.linkTo(parent.top)
@@ -183,6 +192,7 @@ fun SortOrderCard(viewModel: SettingViewModel) {
 
             Text(
                 text = text,
+                style = MaterialTheme.typography.body2,
                 modifier = Modifier.constrainAs(textExplanation) {
                     start.linkTo(parent.start, margin = 8.dp)
                     top.linkTo(textTitle.bottom)

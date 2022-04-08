@@ -1,3 +1,4 @@
+
 package com.tansoften.nyimbozakristo.screen
 
 import androidx.compose.foundation.background
@@ -11,17 +12,17 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Sort
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 import androidx.compose.material.icons.filled.SortByAlpha
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +34,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.asLiveData
 import androidx.navigation.NavHostController
 import com.tansoften.nyimbozakristo.DrawerScreens
 import com.tansoften.nyimbozakristo.item.Songs
@@ -59,7 +59,7 @@ fun AllSongsScreen(
                 verticalArrangement = Arrangement.Center
             ) {
                 itemsIndexed(songs) { index, song ->
-                    SongsCard(song = song, viewModel = viewModel, navController, index= index)
+                    SongsCard(song = song, viewModel = viewModel, navController, index = index)
                 }
             }
         }
@@ -72,7 +72,7 @@ fun AppBarAllSong(
     viewModel: SongsViewModel
 ) {
     // sort order value
-    val sortOrderPreference = viewModel.sortOrderPreferences.asLiveData().observeAsState().value
+    val sortOrderPreference = viewModel.songSorted.observeAsState().value
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -108,14 +108,26 @@ fun AppBarAllSong(
     }
 }
 
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SongsCard(song: Songs, viewModel: SongsViewModel, navController: NavHostController, index: Int) {
+fun SongsCard(
+    song: Songs,
+    viewModel: SongsViewModel,
+    navController: NavHostController,
+    index: Int
+) {
 
     Card(
         modifier = Modifier
             .clickable {
-                navController.navigate(route = DrawerScreens.VerseScreen.passPage(index))
+                if (viewModel.searchQuery.value.isEmpty()) {
+                    navController.navigate(route = DrawerScreens.VerseScreen.passPage(index))
+                } else {
+                    val index2 = song.songs_id - 1
+                    navController.navigate(route = DrawerScreens.VerseScreen.passPage(index2))
+                }
+
             }) {
 
         Row(

@@ -9,20 +9,22 @@ import androidx.compose.ui.unit.sp
 import com.tansoften.nyimbozakristo.R
 
 
-
 val QuickSand = FontFamily(
     Font(resId = R.font.quicksand_regular),
-    Font(resId = R.font.quicksand_bold, FontWeight.Bold)
+    Font(resId = R.font.quicksand_bold, FontWeight.Bold),
+    Font(resId = R.font.quicksand_light, FontWeight.Light)
 )
 
 val Roboto = FontFamily(
     Font(resId = R.font.roboto_regular),
-    Font(resId = R.font.roboto_bold, FontWeight.Bold)
+    Font(resId = R.font.roboto_bold, FontWeight.Bold),
+    Font(resId = R.font.roboto_light, FontWeight.Light)
 )
 
 val Poppins = FontFamily(
     Font(resId = R.font.poppins_regular),
-    Font(resId = R.font.poppins_bold, FontWeight.Bold)
+    Font(resId = R.font.poppins_bold, FontWeight.Bold),
+    Font(resId = R.font.poppins_light, FontWeight.Light)
 )
 
 // Set of Material typography styles to start with
@@ -30,7 +32,7 @@ val Typography = Typography(
     body1 = TextStyle(
         fontFamily = Poppins,
         fontWeight = FontWeight.Normal,
-        fontSize = 18.sp
+        fontSize = 16.sp
     ),
 
     h1 = TextStyle(
@@ -39,6 +41,11 @@ val Typography = Typography(
         fontSize = 18.sp
     ),
 
+    body2 = TextStyle(
+        fontFamily = Poppins,
+        fontWeight = FontWeight.Light,
+        fontSize = 14.sp
+    )
 
 
     /* Other default text styles to override

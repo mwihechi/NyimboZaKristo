@@ -51,4 +51,6 @@ class SongsViewModel @Inject constructor(
 
     val lovedSongs = db.songsDao().getLikedSongs()
 
+    val songSorted = sortOrderPreferences.asLiveData()
+
 }

@@ -16,10 +16,10 @@ interface SongsDao {
             SortOrder.BY_NAME -> getAllSongsSortByName(query)
         }
 
-    @Query("SELECT * FROM songs WHERE title || songs_id LIKE '%' || :query || '%' ORDER BY songs_id ASC, title")
+    @Query("SELECT * FROM songs WHERE title || songs_id || verse_text LIKE '%' || :query || '%' ORDER BY songs_id ASC, title")
     fun getAllSongsSortByNumber(query: String): Flow<List<Songs>>
 
-    @Query("SELECT * FROM songs WHERE title || songs_id LIKE '%' || :query || '%' ORDER BY title ASC, title")
+    @Query("SELECT * FROM songs WHERE title || songs_id || verse_text LIKE '%' || :query || '%' ORDER BY title ASC, title")
     fun getAllSongsSortByName(query: String): Flow<List<Songs>>
 
     @Query("SELECT * FROM songs WHERE `like` = 1")

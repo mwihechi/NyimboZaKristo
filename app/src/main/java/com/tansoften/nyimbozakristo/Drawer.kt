@@ -27,12 +27,7 @@ sealed class DrawerScreens(
     )
 
 
-    object LovedSong : DrawerScreens(
-        route = "loved_song_screen",
-        title = "Nyimbo Pendwa",
-        icon = Icons.Rounded.Favorite
-    )
-
+    object LovedSong : DrawerScreens(route = "loved_song_screen", title = "Nyimbo Pendwa", icon = Icons.Rounded.Favorite)
 
     object SettingScreen : DrawerScreens(route = "setting_screen", title = "Mipangilio", icon = Icons.Rounded.Settings)
 
@@ -41,6 +36,7 @@ sealed class DrawerScreens(
     object ShareScreen : DrawerScreens(route = "share_screen", title = "Sambaza app", icon = Icons.Rounded.Share)
 
     object CategoryScreen : DrawerScreens(route = "category_screen", title = "Yaliyomo", icon = Icons.Rounded.Category)
+
 
     object VerseScreen : DrawerScreens(route = "verse_screen/{$VERSE_ARGUMENT_KEY}", title = "Verses Screen", icon = Icons.Rounded.FavoriteBorder) {
         fun passPage(currentPage: Int): String {

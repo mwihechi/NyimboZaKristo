@@ -27,7 +27,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.room.FtsOptions
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -72,14 +71,14 @@ fun VerseScreen(
             }
 
             SortOrder.BY_NAME -> {
-                val songSorted = verse.sortedBy { songs ->
-                    songs.title
-                }
+
+                val verseSorted = verse.sortedBy { verses -> verses.title }
+
                 Content(
                     navController = navController,
                     page = page,
                     viewModel = viewModel,
-                    verse = songSorted,
+                    verse = verseSorted,
                     fontSize = fontSize
                 )
             }
@@ -111,10 +110,9 @@ fun Content(
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(40.dp)
-                .background(MaterialTheme.colors.primary)
+                .height(50.dp)
         ) {
-            val (backArrowIcon, shareIcon, fontSizeIcon, lovedIcon, textAppName, titleText) = createRefs()
+            val (backArrowIcon, shareIcon, fontSizeIcon, lovedIcon, textAppName) = createRefs()
 
             IconButton(onClick = {
                 navController.popBackStack()
@@ -186,7 +184,6 @@ fun Content(
             state = pagerState,
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.error)
                 .padding(8.dp)
         ) { page ->
             val text =
@@ -194,7 +191,10 @@ fun Content(
             Text(
                 text = text.toString(),
                 fontSize = fontSize.sp,
-                modifier = Modifier.background(MaterialTheme.colors.primary).verticalScroll(rememberScrollState())
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
             )
         }
 

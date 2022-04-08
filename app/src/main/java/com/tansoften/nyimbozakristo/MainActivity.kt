@@ -14,7 +14,6 @@ import com.tansoften.nyimbozakristo.ui.theme.NyimboZaKristoTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

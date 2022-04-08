@@ -40,7 +40,7 @@ fun NavigationHost(navController: NavHostController, openDrawer: () -> Unit) {
             )
         }
 
-        composable(DrawerScreens.ShareScreen.route) {}
+        //composable(DrawerScreens.ShareScreen.route) { ShareApp() }
 
     }
 }
