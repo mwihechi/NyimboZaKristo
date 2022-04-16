@@ -17,7 +17,8 @@ fun NavigationHost(navController: NavHostController, openDrawer: () -> Unit) {
         composable(DrawerScreens.AllSongScreen.route) {
             AllSongsScreen(openDrawer = {
                 openDrawer()
-            }, navController = navController)
+            }, navController = navController,
+            isShareApp = false)
         }
 
         composable(DrawerScreens.LovedSong.route) { LovedSongsScreen(navController = navController) }
@@ -40,7 +41,19 @@ fun NavigationHost(navController: NavHostController, openDrawer: () -> Unit) {
             )
         }
 
-        //composable(DrawerScreens.ShareScreen.route) { ShareApp() }
+        composable(DrawerScreens.NyimboSplashScreen.route) {
+            NyimboSplashScreen(navController = navController)
+        }
+
+        composable(DrawerScreens.ShareScreen.route) {
+            AllSongsScreen(
+                openDrawer = {
+                    openDrawer()
+                },
+                navController = navController,
+                isShareApp = true
+            )
+        }
 
     }
 }

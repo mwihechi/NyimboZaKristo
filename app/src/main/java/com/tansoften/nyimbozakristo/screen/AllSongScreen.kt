@@ -1,4 +1,3 @@
-
 package com.tansoften.nyimbozakristo.screen
 
 import androidx.compose.foundation.background
@@ -7,32 +6,24 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Sort
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
 import androidx.compose.material.icons.filled.SortByAlpha
-import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.twotone.Favorite
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ChainStyle
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.tansoften.nyimbozakristo.DrawerScreens
@@ -47,6 +38,7 @@ fun AllSongsScreen(
     openDrawer: () -> Unit,
     viewModel: SongsViewModel = hiltViewModel(),
     navController: NavHostController,
+    isShareApp: Boolean
 ) {
     val songs = viewModel.songs.observeAsState().value
 
@@ -63,6 +55,10 @@ fun AllSongsScreen(
                 }
             }
         }
+
+       /* if (isShareApp) {
+            ShareApp()
+        }*/
     }
 }
 
@@ -74,26 +70,40 @@ fun AppBarAllSong(
     // sort order value
     val sortOrderPreference = viewModel.songSorted.observeAsState().value
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+    ConstraintLayout(
         modifier = Modifier
             .requiredHeight(50.dp)
             .fillMaxSize()
     ) {
+        val (leadingIcon, textTitle, landingIcon) = createRefs()
+
+        createHorizontalChain(
+            leadingIcon,
+            textTitle,
+            landingIcon,
+            chainStyle = ChainStyle.SpreadInside
+        )
+
         IconButton(onClick = {
             onButtonClicked()
+        }, modifier = Modifier.constrainAs(leadingIcon) {
+            centerVerticallyTo(parent)
         }) {
             Icon(Icons.Filled.Menu, "Menu")
         }
 
         Text(
             text = "Nyimbo Za Kristo", textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.h1
+            style = MaterialTheme.typography.h1,
+            modifier = Modifier.constrainAs(textTitle) {
+                centerVerticallyTo(parent)
+            }
         )
 
         if (sortOrderPreference != null) {
-            IconButton(onClick = {
+            IconButton(modifier = Modifier.constrainAs(landingIcon) {
+                centerVerticallyTo(parent)
+            }, onClick = {
                 when (sortOrderPreference.sortOrder) {
                     SortOrder.BY_NUMBER -> viewModel.sortOrderSelected(SortOrder.BY_NAME)
                     SortOrder.BY_NAME -> viewModel.sortOrderSelected(SortOrder.BY_NUMBER)
@@ -130,28 +140,39 @@ fun SongsCard(
 
             }) {
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center, modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
+        ConstraintLayout(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
         ) {
+            val (textTitle, textNo, landingIcon) = createRefs()
+            val firstGuideLine = createGuidelineFromAbsoluteLeft(0.11f)
+            val secondGuideLine = createGuidelineFromStart(0.9f)
+
             Text(
                 text = song.songs_id.toString(),
-                fontSize = 18.sp,
+                fontSize = 16.sp,
                 textAlign = TextAlign.Center,
+
                 modifier = Modifier
                     .background(MaterialTheme.colors.background, shape = CircleShape)
+                    .constrainAs(textNo) {
+                        linkTo(parent.start, firstGuideLine)
+                        top.linkTo(parent.top)
+                    }
                     .badgeLayout()
             )
             Text(
                 text = song.title,
                 fontSize = 18.sp,
                 maxLines = 1,
+                textAlign = TextAlign.Start,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 8.dp)
+                    .constrainAs(textTitle) {
+                        linkTo(firstGuideLine, secondGuideLine, startMargin = 2.dp)
+                        width = Dimension.fillToConstraints
+                    }
             )
 
             Surface(
@@ -161,6 +182,10 @@ fun SongsCard(
                 },
                 modifier = Modifier
                     .size(26.dp)
+                    .constrainAs(landingIcon) {
+                        linkTo(secondGuideLine, parent.end)
+                        width = Dimension.preferredWrapContent
+                    }
             ) {
                 when (song.like) {
                     true -> {
@@ -176,59 +201,6 @@ fun SongsCard(
                 }
             }
         }
-    }
-}
-
-
-@Composable
-fun SearchViewText(viewModel: SongsViewModel) {
-    var query by rememberSaveable { mutableStateOf("") }
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        TextField(
-            value = query,
-            onValueChange = { onQueryChanged ->
-                query = onQueryChanged
-                if (onQueryChanged.isNotEmpty()) {
-                    viewModel.searchQuery.value = query
-                }
-            },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Rounded.Search,
-                    tint = MaterialTheme.colors.onBackground,
-                    contentDescription = "Search icon"
-                )
-            },
-            trailingIcon = {
-                if (query.isNotEmpty()) {
-                    IconButton(onClick = {
-                        query = ""
-                        viewModel.searchQuery.value = query
-                    }) {
-                        Icon(
-                            imageVector = Icons.Rounded.Clear,
-                            tint = MaterialTheme.colors.onBackground,
-                            contentDescription = "Clear icon"
-                        )
-                    }
-                }
-            },
-            maxLines = 1,
-            colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-            placeholder = { Text(text = "tafuta kwa maneno au namba") },
-            textStyle = MaterialTheme.typography.body1,
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-        )
     }
 }
 

@@ -31,6 +31,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.tansoften.nyimbozakristo.APP_URL
+import com.tansoften.nyimbozakristo.DrawerScreens
 import com.tansoften.nyimbozakristo.item.Songs
 import com.tansoften.nyimbozakristo.storage.SortOrder
 import com.tansoften.nyimbozakristo.ui.theme.LikeColor
@@ -115,7 +116,7 @@ fun Content(
             val (backArrowIcon, shareIcon, fontSizeIcon, lovedIcon, textAppName) = createRefs()
 
             IconButton(onClick = {
-                navController.popBackStack()
+                navController.navigate(DrawerScreens.AllSongScreen.route)
             }, modifier = Modifier.constrainAs(backArrowIcon) {
                 start.linkTo(parent.start)
                 top.linkTo(parent.top)
@@ -165,7 +166,7 @@ fun Content(
 
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "${verse[pageNo].songs_id}: ${verse[pageNo].title}",
+            text = "${verse[pageNo].songs_id}-${verse[pageNo].title}",
             textAlign = TextAlign.Center,
             color = LikeColor,
             style = MaterialTheme.typography.h1,

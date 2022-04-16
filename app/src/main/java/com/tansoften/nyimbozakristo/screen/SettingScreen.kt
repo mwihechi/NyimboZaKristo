@@ -9,11 +9,15 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.tansoften.nyimbozakristo.DrawerScreens
 import com.tansoften.nyimbozakristo.storage.SortOrder
 import com.tansoften.nyimbozakristo.view_model.SettingViewModel
 import kotlin.math.roundToInt
@@ -31,7 +35,7 @@ fun SettingScreen(viewModel: SettingViewModel = hiltViewModel(), navController: 
             val (arrowIcon, titleText) = createRefs()
 
             IconButton(onClick = {
-                navController.popBackStack()
+                navController.navigate(DrawerScreens.AllSongScreen.route)
             }, modifier = Modifier.constrainAs(arrowIcon) {
                 centerVerticallyTo(parent)
                 start.linkTo(parent.start)
@@ -44,21 +48,19 @@ fun SettingScreen(viewModel: SettingViewModel = hiltViewModel(), navController: 
                 modifier = Modifier.constrainAs(titleText) {
                     centerVerticallyTo(parent)
                     start.linkTo(arrowIcon.end)
-                    end.linkTo(parent.end)
                 },
                 style = MaterialTheme.typography.h1
             )
         }
 
+        // Font size card
+        FontSizeCard(viewModel = viewModel)
 
         // Screen stay awake card
         KeepScreenOnCard(viewModel = viewModel)
 
         // Sort order card
         SortOrderCard(viewModel = viewModel)
-
-        // Font size card
-        FontSizeCard(viewModel = viewModel)
     }
 }
 
@@ -100,7 +102,6 @@ fun FontSizeCard(viewModel: SettingViewModel) {
                     modifier = Modifier.constrainAs(textFontSize) {
                         end.linkTo(parent.end, margin = 8.dp)
                         top.linkTo(parent.top)
-
                     })
                 Slider(
                     valueRange = 0.14f..0.30f,
@@ -128,11 +129,11 @@ fun KeepScreenOnCard(viewModel: SettingViewModel) {
         shape = RoundedCornerShape(4.dp),
         modifier = Modifier.padding(4.dp)
     ) {
-        ConstraintLayout {
+        ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
             val (textTitle, textExplanation, switch) = createRefs()
             val isScreenOn = viewModel.isScreenOn.observeAsState().value
 
-            val text = "Wezesha mwanga wa simu kutozima pindi unapukuwa ukisoma"
+            val text = "Wezesha mwanga wa simu kutozima pindi unapukuwa ukisoma nyimbo."
 
             Text(
                 text = "Wezesha mwanga kutozima",
@@ -145,9 +146,11 @@ fun KeepScreenOnCard(viewModel: SettingViewModel) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.body2,
+                textAlign = TextAlign.Start,
                 modifier = Modifier.constrainAs(textExplanation) {
-                    start.linkTo(parent.start, margin = 8.dp)
+                    linkTo(parent.start, switch.start, startMargin = 8.dp)
                     top.linkTo(textTitle.bottom)
+                    width = Dimension.fillToConstraints
                 }
             )
 
@@ -158,12 +161,12 @@ fun KeepScreenOnCard(viewModel: SettingViewModel) {
                     checkedState = it
                     viewModel.updateIsScreenOn(isScreenOn = it)
                 }, modifier = Modifier.constrainAs(switch) {
-                    end.linkTo(parent.end, margin = 8.dp)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(textExplanation.bottom)
+                    linkTo(parent.top, textExplanation.bottom)
+                    end.linkTo(parent.end)
                 })
             }
 
+           // createHorizontalChain(textExplanation, switch,  chainStyle = ChainStyle.SpreadInside)
         }
     }
 }
@@ -194,8 +197,9 @@ fun SortOrderCard(viewModel: SettingViewModel) {
                 text = text,
                 style = MaterialTheme.typography.body2,
                 modifier = Modifier.constrainAs(textExplanation) {
-                    start.linkTo(parent.start, margin = 8.dp)
+                    linkTo(parent.start, switch.start, startMargin = 8.dp)
                     top.linkTo(textTitle.bottom)
+                    width = Dimension.fillToConstraints
                 }
             )
 
@@ -218,9 +222,8 @@ fun SortOrderCard(viewModel: SettingViewModel) {
                         }
                     )
                 }, modifier = Modifier.constrainAs(switch) {
-                    end.linkTo(parent.end, margin = 8.dp)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(textExplanation.bottom)
+                    linkTo(parent.top, textExplanation.bottom)
+                    end.linkTo(parent.end)
                 })
             }
         }

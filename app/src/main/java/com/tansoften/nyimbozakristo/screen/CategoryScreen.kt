@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
+import com.tansoften.nyimbozakristo.DrawerScreens
 
 
 @Composable
@@ -31,7 +32,7 @@ fun CategoryScreen(navController: NavHostController) {
             val (arrowIcon, titleText) = createRefs()
 
             IconButton(onClick = {
-                navController.popBackStack()
+                navController.navigate(DrawerScreens.AllSongScreen.route)
             }, modifier = Modifier.constrainAs(arrowIcon) {
                 centerVerticallyTo(parent)
                 start.linkTo(parent.start)

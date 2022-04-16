@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import com.tansoften.nyimbozakristo.BuildConfig
+import com.tansoften.nyimbozakristo.DrawerScreens
 
 
 @Composable
@@ -39,7 +40,7 @@ fun AboutScreen(navController: NavController) {
             val (arrowIcon, titleText) = createRefs()
 
             IconButton(onClick = {
-                navController.popBackStack()
+                navController.navigate(DrawerScreens.AllSongScreen.route)
             }, modifier = Modifier.constrainAs(arrowIcon) {
                 centerVerticallyTo(parent)
                 start.linkTo(parent.start)

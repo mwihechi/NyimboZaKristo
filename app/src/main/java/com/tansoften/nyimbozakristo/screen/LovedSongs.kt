@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.tansoften.nyimbozakristo.DrawerScreens
 import com.tansoften.nyimbozakristo.item.Songs
 import com.tansoften.nyimbozakristo.view_model.SongsViewModel
 
@@ -44,7 +45,7 @@ fun LovedSongsScreen(
             val (arrowIcon, titleText) = createRefs()
 
             IconButton(onClick = {
-                navController.popBackStack()
+                navController.navigate(DrawerScreens.AllSongScreen.route)
             }, modifier = Modifier.constrainAs(arrowIcon) {
                 centerVerticallyTo(parent)
                 start.linkTo(parent.start)
@@ -57,7 +58,6 @@ fun LovedSongsScreen(
                 modifier = Modifier.constrainAs(titleText) {
                     centerVerticallyTo(parent)
                     start.linkTo(arrowIcon.end)
-                    end.linkTo(parent.end)
                 },
                 style = MaterialTheme.typography.h1
             )

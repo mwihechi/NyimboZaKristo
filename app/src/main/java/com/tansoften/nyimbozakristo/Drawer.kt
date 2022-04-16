@@ -6,6 +6,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Splitscreen
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,19 +27,36 @@ sealed class DrawerScreens(
         icon = Icons.Rounded.Home
     )
 
+    object NyimboSplashScreen : DrawerScreens(
+        route = "nyimbo_splash_screen",
+        title = "Splash Screen",
+        icon = Icons.Default.Splitscreen
+    )
 
-    object LovedSong : DrawerScreens(route = "loved_song_screen", title = "Nyimbo Pendwa", icon = Icons.Rounded.Favorite)
+    object LovedSong : DrawerScreens(
+        route = "loved_song_screen",
+        title = "Nyimbo Pendwa",
+        icon = Icons.Rounded.Favorite
+    )
 
-    object SettingScreen : DrawerScreens(route = "setting_screen", title = "Mipangilio", icon = Icons.Rounded.Settings)
+    object SettingScreen :
+        DrawerScreens(route = "setting_screen", title = "Mipangilio", icon = Icons.Rounded.Settings)
 
-    object AboutScreen : DrawerScreens(route = "about_screen", title = "Kuhusu", icon = Icons.Rounded.Info)
+    object AboutScreen :
+        DrawerScreens(route = "about_screen", title = "Kuhusu", icon = Icons.Rounded.Info)
 
-    object ShareScreen : DrawerScreens(route = "share_screen", title = "Sambaza app", icon = Icons.Rounded.Share)
+    object ShareScreen :
+        DrawerScreens(route = "share_screen", title = "Sambaza app", icon = Icons.Rounded.Share)
 
-    object CategoryScreen : DrawerScreens(route = "category_screen", title = "Yaliyomo", icon = Icons.Rounded.Category)
+    object CategoryScreen :
+        DrawerScreens(route = "category_screen", title = "Yaliyomo", icon = Icons.Rounded.Category)
 
 
-    object VerseScreen : DrawerScreens(route = "verse_screen/{$VERSE_ARGUMENT_KEY}", title = "Verses Screen", icon = Icons.Rounded.FavoriteBorder) {
+    object VerseScreen : DrawerScreens(
+        route = "verse_screen/{$VERSE_ARGUMENT_KEY}",
+        title = "Verses Screen",
+        icon = Icons.Rounded.FavoriteBorder
+    ) {
         fun passPage(currentPage: Int): String {
             return this.route.replace(
                 oldValue = "{$VERSE_ARGUMENT_KEY}",
@@ -53,7 +71,8 @@ private val screens = listOf(
     DrawerScreens.LovedSong,
     DrawerScreens.CategoryScreen,
     DrawerScreens.SettingScreen,
-    DrawerScreens.AboutScreen
+    DrawerScreens.AboutScreen,
+    DrawerScreens.ShareScreen
 )
 
 @Composable
