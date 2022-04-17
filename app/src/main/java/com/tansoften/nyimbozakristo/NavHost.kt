@@ -12,7 +12,7 @@ import com.tansoften.nyimbozakristo.screen.*
 fun NavigationHost(navController: NavHostController, openDrawer: () -> Unit) {
     NavHost(
         navController = navController,
-        startDestination = DrawerScreens.AllSongScreen.route
+        startDestination = DrawerScreens.SplashScreen.route
     ) {
         composable(DrawerScreens.AllSongScreen.route) {
             AllSongsScreen(
@@ -49,7 +49,7 @@ fun NavigationHost(navController: NavHostController, openDrawer: () -> Unit) {
             )
         }
 
-        composable(DrawerScreens.NyimboSplashScreen.route) {
+        composable(DrawerScreens.SplashScreen.route) {
             NyimboSplashScreen(navController = navController)
         }
 

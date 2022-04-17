@@ -28,7 +28,7 @@ sealed class DrawerScreens(
         icon = Icons.Rounded.Home
     )
 
-    object NyimboSplashScreen : DrawerScreens(
+    object SplashScreen : DrawerScreens(
         route = "nyimbo_splash_screen",
         title = "Splash Screen",
         icon = Icons.Default.Splitscreen

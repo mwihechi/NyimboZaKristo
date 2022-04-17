@@ -1,5 +1,7 @@
 package com.tansoften.nyimbozakristo.screen
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -40,6 +43,12 @@ fun AllSongsScreen(
     isShareApp: Boolean
 ) {
     val songs = viewModel.songs.observeAsState().value
+    val activity = (LocalContext.current as? Activity)
+
+    BackHandler {
+        activity?.finish()
+    }
+
 
     Column(modifier = Modifier.fillMaxSize()) {
         AppBarAllSong(onButtonClicked = { openDrawer() }, viewModel = viewModel)
@@ -61,9 +70,9 @@ fun AllSongsScreen(
             }
         }
 
-         if (isShareApp) {
-             ShareApp()
-         }
+        if (isShareApp) {
+            ShareApp()
+        }
     }
 }
 
