@@ -10,26 +10,26 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.tansoften.nyimbozakristo.DrawerScreens
 import com.tansoften.nyimbozakristo.R
 import kotlinx.coroutines.delay
 
 
 @Composable
-fun NyimboSplashScreen(navController: NavHostController) {
+fun SplashScreen(navController: (NavHostController)) {
 
     val scale = remember {
         androidx.compose.animation.core.Animatable(0f)
@@ -46,13 +46,13 @@ fun NyimboSplashScreen(navController: NavHostController) {
     }
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val surface = createRef()
+        val surfaceVal = createRef()
         Surface(
             modifier = Modifier
                 .padding(15.dp)
                 .size(250.dp)
                 .scale(scale.value)
-                .constrainAs(surface) {
+                .constrainAs(surfaceVal) {
                     linkTo(parent.start, parent.end)
                     linkTo(parent.top, parent.bottom)
                 },
@@ -69,8 +69,8 @@ fun NyimboSplashScreen(navController: NavHostController) {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun NSSPreview() {
-    //NyimboSplashScreen()
+    SplashScreen(navController = rememberNavController())
 }

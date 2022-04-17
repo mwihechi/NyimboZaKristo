@@ -10,10 +10,9 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Sort
-import androidx.compose.material.icons.filled.SortByAlpha
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.sharp.Filter
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -103,7 +102,7 @@ fun AppBarAllSong(
                     }
                 }) {
                     when (sortOrderPreference.sortOrder) {
-                        SortOrder.BY_NUMBER -> Icon(Icons.Default.Sort, "Sort")
+                        SortOrder.BY_NUMBER -> Icon(Icons.Filled.Sort, "Sort")
                         SortOrder.BY_NAME -> Icon(Icons.Filled.SortByAlpha, "Sort by alpha")
                     }
                 }

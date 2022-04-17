@@ -50,7 +50,7 @@ fun NavigationHost(navController: NavHostController, openDrawer: () -> Unit) {
         }
 
         composable(DrawerScreens.SplashScreen.route) {
-            NyimboSplashScreen(navController = navController)
+            SplashScreen(navController = navController)
         }
 
         composable(DrawerScreens.ShareScreen.route) {
