@@ -1,5 +1,6 @@
 package com.tansoften.nyimbozakristo.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,10 +10,9 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ChainStyle
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,34 +24,19 @@ import kotlin.math.roundToInt
 
 @Composable
 fun SettingScreen(viewModel: SettingViewModel = hiltViewModel(), navController: NavController) {
+    BackHandler {
+        navController.navigate(DrawerScreens.AllSongScreen.route)
+    }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        ConstraintLayout(
-            modifier = Modifier
-                .requiredHeight(50.dp)
-                .fillMaxSize()
-        ) {
-
-            val (arrowIcon, titleText) = createRefs()
-
-            IconButton(onClick = {
-                navController.navigate(DrawerScreens.AllSongScreen.route)
-            }, modifier = Modifier.constrainAs(arrowIcon) {
-                centerVerticallyTo(parent)
-                start.linkTo(parent.start)
-            }) {
-                Icon(Icons.Filled.ArrowBack, "Menu")
-            }
-            Text(
-                text = "Mipangilio",
-                textAlign = TextAlign.Center,
-                modifier = Modifier.constrainAs(titleText) {
-                    centerVerticallyTo(parent)
-                    start.linkTo(arrowIcon.end)
-                },
-                style = MaterialTheme.typography.h1
-            )
-        }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background)
+    ) {
+        DefaultAppBar(
+            title = "Mipangilio",
+            buttonIcon = Icons.Filled.ArrowBack,
+            onButtonClicked = { navController.popBackStack() })
 
         // Font size card
         FontSizeCard(viewModel = viewModel)
@@ -70,13 +55,17 @@ fun FontSizeCard(viewModel: SettingViewModel) {
     val fontSize = viewModel.fontSize.observeAsState().value
     Card(
         shape = RoundedCornerShape(4.dp),
-        modifier = Modifier.padding(4.dp)
+        modifier = Modifier
+            .padding(4.dp)
+            .fillMaxWidth()
+            .height(100.dp)
     ) {
         ConstraintLayout {
             val (textTitle, textFontSize, slider, textDesc) = createRefs()
 
             Text(
                 text = "Ukubwa wa maneno",
+                fontSize = 15.sp,
                 modifier = Modifier.constrainAs(textTitle) {
                     start.linkTo(parent.start, margin = 8.dp)
                     top.linkTo(parent.top)
@@ -89,6 +78,7 @@ fun FontSizeCard(viewModel: SettingViewModel) {
                 modifier = Modifier.constrainAs(textDesc) {
                     start.linkTo(parent.start, margin = 8.dp)
                     top.linkTo(textTitle.bottom)
+                    width = Dimension.preferredWrapContent
                 }
             )
 
@@ -127,7 +117,10 @@ fun FontSizeCard(viewModel: SettingViewModel) {
 fun KeepScreenOnCard(viewModel: SettingViewModel) {
     Card(
         shape = RoundedCornerShape(4.dp),
-        modifier = Modifier.padding(4.dp)
+        modifier = Modifier
+            .padding(4.dp)
+            .fillMaxWidth()
+            .height(100.dp)
     ) {
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
             val (textTitle, textExplanation, switch) = createRefs()
@@ -137,6 +130,7 @@ fun KeepScreenOnCard(viewModel: SettingViewModel) {
 
             Text(
                 text = "Wezesha mwanga kutozima",
+                fontSize = 15.sp,
                 modifier = Modifier.constrainAs(textTitle) {
                     start.linkTo(parent.start, margin = 8.dp)
                     top.linkTo(parent.top)
@@ -150,7 +144,7 @@ fun KeepScreenOnCard(viewModel: SettingViewModel) {
                 modifier = Modifier.constrainAs(textExplanation) {
                     linkTo(parent.start, switch.start, startMargin = 8.dp)
                     top.linkTo(textTitle.bottom)
-                    width = Dimension.fillToConstraints
+                    width = Dimension.preferredWrapContent
                 }
             )
 
@@ -166,7 +160,7 @@ fun KeepScreenOnCard(viewModel: SettingViewModel) {
                 })
             }
 
-           // createHorizontalChain(textExplanation, switch,  chainStyle = ChainStyle.SpreadInside)
+            // createHorizontalChain(textExplanation, switch,  chainStyle = ChainStyle.SpreadInside)
         }
     }
 }
@@ -175,6 +169,7 @@ fun KeepScreenOnCard(viewModel: SettingViewModel) {
 fun SortOrderCard(viewModel: SettingViewModel) {
     Card(
         shape = RoundedCornerShape(4.dp),
+        backgroundColor = MaterialTheme.colors.background,
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
@@ -187,6 +182,7 @@ fun SortOrderCard(viewModel: SettingViewModel) {
 
             Text(
                 text = "Aina ya mpangilio",
+                fontSize = 15.sp,
                 modifier = Modifier.constrainAs(textTitle) {
                     start.linkTo(parent.start, margin = 8.dp)
                     top.linkTo(parent.top)

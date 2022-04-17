@@ -28,7 +28,7 @@ private val LightColorPalette = lightColors(
 
 @Composable
 fun NyimboZaKristoTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) {
@@ -44,3 +44,4 @@ fun NyimboZaKristoTheme(
         content = content
     )
 }
+

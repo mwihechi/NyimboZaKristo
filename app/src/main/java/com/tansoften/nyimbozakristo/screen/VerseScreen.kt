@@ -2,14 +2,11 @@ package com.tansoften.nyimbozakristo.screen
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.background
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FormatSize
@@ -18,12 +15,13 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -44,48 +42,81 @@ import kotlin.math.roundToInt
 fun VerseScreen(
     navController: NavController,
     page: Int,
-    viewModel: VersesViewModel = hiltViewModel()
+    viewModel: VersesViewModel = hiltViewModel(),
+    isLovedScreen: Boolean
 ) {
 
     val verse = viewModel.verses.observeAsState().value
     val sortOrderPreference = viewModel.sortOrder.observeAsState().value
     val font = viewModel.fontSize.observeAsState().value
     val isScreenOn = viewModel.isScreenOn.observeAsState().value
+    val lovedVerses = viewModel.lovedVerses.observeAsState().value
+
+    if (isLovedScreen && lovedVerses != null && font != null) {
+        val fontSize = (font * 100).roundToInt()
+        when {
+            lovedVerses.isEmpty() -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = "Huna nyimbo pendwa kwa sasa.", fontSize = 18.sp)
+                }
+
+            }
+            lovedVerses.isNotEmpty() -> {
+                Content(
+                    navController = navController,
+                    page = page,
+                    viewModel = viewModel,
+                    verse = lovedVerses,
+                    fontSize = fontSize,
+                    pagerSize = lovedVerses.size
+                )
+            }
+        }
+        BackHandler {
+            navController.navigate(DrawerScreens.AllSongScreen.route)
+        }
+
+    } else {
+        if (sortOrderPreference != null && verse != null && font != null) {
+            val fontSize = (font * 100).roundToInt()
+            when (sortOrderPreference.sortOrder) {
+                SortOrder.BY_NUMBER -> {
+                    Content(
+                        navController = navController,
+                        page = page,
+                        viewModel = viewModel,
+                        verse = verse,
+                        fontSize = fontSize,
+                        pagerSize = 220
+                    )
+                }
+
+                SortOrder.BY_NAME -> {
+
+                    val verseSorted = verse.sortedBy { verses -> verses.title }
+
+                    Content(
+                        navController = navController,
+                        page = page,
+                        viewModel = viewModel,
+                        verse = verseSorted,
+                        fontSize = fontSize,
+                        pagerSize = 220
+                    )
+                }
+            }
+        }
+    }
+
 
     // keep screen on
     if (isScreenOn == true) {
         KeepScreenOn()
     }
-
-
-    if (sortOrderPreference != null && verse != null && font != null) {
-        val fontSize = (font * 100).roundToInt()
-        when (sortOrderPreference.sortOrder) {
-            SortOrder.BY_NUMBER -> {
-                Content(
-                    navController = navController,
-                    page = page,
-                    viewModel = viewModel,
-                    verse = verse,
-                    fontSize = fontSize
-                )
-            }
-
-            SortOrder.BY_NAME -> {
-
-                val verseSorted = verse.sortedBy { verses -> verses.title }
-
-                Content(
-                    navController = navController,
-                    page = page,
-                    viewModel = viewModel,
-                    verse = verseSorted,
-                    fontSize = fontSize
-                )
-            }
-        }
-    }
-
 
 }
 
@@ -97,72 +128,51 @@ fun Content(
     viewModel: VersesViewModel,
     verse: List<Songs>,
     fontSize: Int,
+    pagerSize: Int,
 ) {
     val pagerState = rememberPagerState()
     var pageNo by remember { mutableStateOf(0) }
     val openDialogCustom = remember { mutableStateOf(false) }
     val context = LocalContext.current
 
+    BackHandler {
+        navController.navigate(DrawerScreens.AllSongScreen.route)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize(), verticalArrangement = Arrangement.Top
     ) {
 
-        ConstraintLayout(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            val (backArrowIcon, shareIcon, fontSizeIcon, lovedIcon, textAppName) = createRefs()
-
-            IconButton(onClick = {
-                navController.navigate(DrawerScreens.AllSongScreen.route)
-            }, modifier = Modifier.constrainAs(backArrowIcon) {
-                start.linkTo(parent.start)
-                top.linkTo(parent.top)
-                bottom.linkTo(parent.bottom)
-            }) {
-                Icon(Icons.Filled.ArrowBack, "Menu")
-            }
-
-            Text(text = "Nyimbo Za Kristo", modifier = Modifier.constrainAs(textAppName) {
-                start.linkTo(backArrowIcon.end)
-                top.linkTo(parent.top)
-                bottom.linkTo(parent.bottom)
-            }, style = MaterialTheme.typography.h1)
-
-            IconButton(onClick = {
-                shareVerses(verse[pageNo], context)
-            }, modifier = Modifier.constrainAs(shareIcon) {
-                end.linkTo(parent.end)
-                top.linkTo(parent.top)
-                bottom.linkTo(parent.bottom)
-            }) {
-                Icon(Icons.Filled.Share, "Share Icon")
-            }
-
-            IconButton(onClick = { viewModel.onLikeChecked(song = verse[pageNo]) },
-                modifier = Modifier.constrainAs(lovedIcon) {
-                    end.linkTo(shareIcon.start)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                }) {
-                when (verse[pageNo].like) {
-                    true -> Icon(Icons.Rounded.Favorite, "Liked songs", tint = LikeColor)
-                    false -> Icon(Icons.TwoTone.Favorite, "Unliked Song")
+        TopAppBar(
+            title = {
+                Text(
+                    text = "Nyimbo Za Kristo",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
+            navigationIcon = {
+                IconButton(onClick = { navController.navigate(DrawerScreens.AllSongScreen.route) }) {
+                    Icon(Icons.Filled.ArrowBack, "Menu")
+                }
+            },
+            backgroundColor = MaterialTheme.colors.primary,
+            actions = {
+                IconButton(onClick = { openDialogCustom.value = true }) {
+                    Icon(Icons.Filled.FormatSize, "Font size")
+                }
+                IconButton(onClick = { viewModel.onLikeChecked(song = verse[pageNo]) }) {
+                    when (verse[pageNo].like) {
+                        true -> Icon(Icons.Rounded.Favorite, "Liked songs", tint = LikeColor)
+                        false -> Icon(Icons.TwoTone.Favorite, "Unliked Song")
+                    }
+                }
+                IconButton(onClick = { shareVerses(verse[pageNo], context) }) {
+                    Icon(Icons.Filled.Share, "Share Icon")
                 }
             }
-
-            IconButton(
-                onClick = { openDialogCustom.value = true },
-                modifier = Modifier.constrainAs(fontSizeIcon) {
-                    end.linkTo(lovedIcon.start)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                }) {
-                Icon(Icons.Filled.FormatSize, "Font size")
-            }
-        }
+        )
 
         Spacer(modifier = Modifier.height(4.dp))
         Text(
@@ -181,7 +191,7 @@ fun Content(
 
 
         HorizontalPager(
-            count = 220,
+            count = pagerSize,
             state = pagerState,
             modifier = Modifier
                 .fillMaxSize()

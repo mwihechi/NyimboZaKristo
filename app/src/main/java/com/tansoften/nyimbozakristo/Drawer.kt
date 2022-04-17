@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
 const val VERSE_ARGUMENT_KEY = "currentPage"
+const val LOVE_ARGUMENT_KEY = "isLovedSongs"
 
 sealed class DrawerScreens(
     val route: String,
@@ -53,15 +54,12 @@ sealed class DrawerScreens(
 
 
     object VerseScreen : DrawerScreens(
-        route = "verse_screen/{$VERSE_ARGUMENT_KEY}",
+        route = "verse_screen/{$VERSE_ARGUMENT_KEY}/{$LOVE_ARGUMENT_KEY}",
         title = "Verses Screen",
         icon = Icons.Rounded.FavoriteBorder
     ) {
-        fun passPage(currentPage: Int): String {
-            return this.route.replace(
-                oldValue = "{$VERSE_ARGUMENT_KEY}",
-                newValue = currentPage.toString()
-            )
+        fun passArgument(currentPage: Int, isLovedScreen: Boolean): String{
+            return "verse_screen/$currentPage/$isLovedScreen"
         }
     }
 }

@@ -13,7 +13,7 @@ import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material.icons.filled.SortByAlpha
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.twotone.Favorite
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
@@ -21,7 +21,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -51,14 +50,20 @@ fun AllSongsScreen(
                 verticalArrangement = Arrangement.Center
             ) {
                 itemsIndexed(songs) { index, song ->
-                    SongsCard(song = song, viewModel = viewModel, navController, index = index)
+                    SongsCard(
+                        song = song,
+                        viewModel = viewModel,
+                        navController,
+                        index = index,
+                        isLovedScreen = false
+                    )
                 }
             }
         }
 
-       /* if (isShareApp) {
-            ShareApp()
-        }*/
+         if (isShareApp) {
+             ShareApp()
+         }
     }
 }
 
@@ -70,52 +75,32 @@ fun AppBarAllSong(
     // sort order value
     val sortOrderPreference = viewModel.songSorted.observeAsState().value
 
-    ConstraintLayout(
-        modifier = Modifier
-            .requiredHeight(50.dp)
-            .fillMaxSize()
-    ) {
-        val (leadingIcon, textTitle, landingIcon) = createRefs()
-
-        createHorizontalChain(
-            leadingIcon,
-            textTitle,
-            landingIcon,
-            chainStyle = ChainStyle.SpreadInside
-        )
-
-        IconButton(onClick = {
-            onButtonClicked()
-        }, modifier = Modifier.constrainAs(leadingIcon) {
-            centerVerticallyTo(parent)
-        }) {
-            Icon(Icons.Filled.Menu, "Menu")
-        }
-
-        Text(
-            text = "Nyimbo Za Kristo", textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.h1,
-            modifier = Modifier.constrainAs(textTitle) {
-                centerVerticallyTo(parent)
+    TopAppBar(
+        title = {
+            Text(text = "Nyimbo Za Kristo")
+        },
+        navigationIcon = {
+            IconButton(onClick = { onButtonClicked() }) {
+                Icon(Icons.Filled.Menu, "Menu")
             }
-        )
-
-        if (sortOrderPreference != null) {
-            IconButton(modifier = Modifier.constrainAs(landingIcon) {
-                centerVerticallyTo(parent)
-            }, onClick = {
-                when (sortOrderPreference.sortOrder) {
-                    SortOrder.BY_NUMBER -> viewModel.sortOrderSelected(SortOrder.BY_NAME)
-                    SortOrder.BY_NAME -> viewModel.sortOrderSelected(SortOrder.BY_NUMBER)
-                }
-            }) {
-                when (sortOrderPreference.sortOrder) {
-                    SortOrder.BY_NUMBER -> Icon(Icons.Default.Sort, "Sort")
-                    SortOrder.BY_NAME -> Icon(Icons.Filled.SortByAlpha, "Sort by alpha")
+        },
+        backgroundColor = MaterialTheme.colors.primary,
+        actions = {
+            if (sortOrderPreference != null) {
+                IconButton(onClick = {
+                    when (sortOrderPreference.sortOrder) {
+                        SortOrder.BY_NUMBER -> viewModel.sortOrderSelected(SortOrder.BY_NAME)
+                        SortOrder.BY_NAME -> viewModel.sortOrderSelected(SortOrder.BY_NUMBER)
+                    }
+                }) {
+                    when (sortOrderPreference.sortOrder) {
+                        SortOrder.BY_NUMBER -> Icon(Icons.Default.Sort, "Sort")
+                        SortOrder.BY_NAME -> Icon(Icons.Filled.SortByAlpha, "Sort by alpha")
+                    }
                 }
             }
         }
-    }
+    )
 }
 
 
@@ -125,17 +110,28 @@ fun SongsCard(
     song: Songs,
     viewModel: SongsViewModel,
     navController: NavHostController,
-    index: Int
+    index: Int,
+    isLovedScreen: Boolean
 ) {
 
     Card(
         modifier = Modifier
             .clickable {
                 if (viewModel.searchQuery.value.isEmpty()) {
-                    navController.navigate(route = DrawerScreens.VerseScreen.passPage(index))
+                    navController.navigate(
+                        route = DrawerScreens.VerseScreen.passArgument(
+                            currentPage = index,
+                            isLovedScreen = isLovedScreen
+                        )
+                    )
                 } else {
                     val index2 = song.songs_id - 1
-                    navController.navigate(route = DrawerScreens.VerseScreen.passPage(index2))
+                    navController.navigate(
+                        route = DrawerScreens.VerseScreen.passArgument(
+                            currentPage = index2,
+                            isLovedScreen = isLovedScreen
+                        )
+                    )
                 }
 
             }) {

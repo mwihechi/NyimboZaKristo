@@ -15,10 +15,12 @@ fun NavigationHost(navController: NavHostController, openDrawer: () -> Unit) {
         startDestination = DrawerScreens.AllSongScreen.route
     ) {
         composable(DrawerScreens.AllSongScreen.route) {
-            AllSongsScreen(openDrawer = {
-                openDrawer()
-            }, navController = navController,
-            isShareApp = false)
+            AllSongsScreen(
+                openDrawer = {
+                    openDrawer()
+                }, navController = navController,
+                isShareApp = false
+            )
         }
 
         composable(DrawerScreens.LovedSong.route) { LovedSongsScreen(navController = navController) }
@@ -31,13 +33,19 @@ fun NavigationHost(navController: NavHostController, openDrawer: () -> Unit) {
 
         composable(
             route = DrawerScreens.VerseScreen.route,
-            arguments = listOf(navArgument(VERSE_ARGUMENT_KEY) {
-                type = NavType.IntType
-            })
+            arguments = listOf(
+                navArgument(VERSE_ARGUMENT_KEY) {
+                    type = NavType.IntType
+                },
+                navArgument(LOVE_ARGUMENT_KEY) {
+                    type = NavType.BoolType
+                }
+            )
         ) {
             VerseScreen(
                 navController = navController,
-                it.arguments!!.getInt(VERSE_ARGUMENT_KEY)
+                page = it.arguments!!.getInt(VERSE_ARGUMENT_KEY),
+                isLovedScreen = it.arguments!!.getBoolean(LOVE_ARGUMENT_KEY)
             )
         }
 

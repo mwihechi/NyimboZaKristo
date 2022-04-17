@@ -30,6 +30,7 @@ class VersesViewModel @Inject constructor(
         }
 
     val verses = versesFlow.asLiveData()
+    val lovedVerses = db.songsDao().getLikedSongs()
     val fontSize = preferencesManager.fontSizeFlow.asLiveData()
     val sortOrder = sortOrderPreferences.asLiveData()
     val isScreenOn = preferencesManager.isScreenOnFlow.asLiveData()
