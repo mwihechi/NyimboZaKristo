@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -44,8 +45,8 @@ fun AboutScreen(navController: NavController) {
             onButtonClicked = { navController.navigate(DrawerScreens.AllSongScreen.route) })
 
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-            val (imageVector, textVersion, textAppName, textDeveloperInfo) = createRefs()
-            val topGuideLine = createGuidelineFromTop(0.25f)
+            val (imageVector, textVersion, textDeveloperInfo) = createRefs()
+            val topGuideLine = createGuidelineFromTop(0.15f)
 
             Surface(
                 modifier = Modifier
@@ -66,27 +67,22 @@ fun AboutScreen(navController: NavController) {
             }
 
 
-            Text(text = "Nyimbo Za Kristo",
-                modifier = Modifier.constrainAs(textAppName) {
+            Text(
+                text = "Toleo Namba: ${manager.versionName}",
+                modifier = Modifier.constrainAs(textVersion) {
                     top.linkTo(imageVector.bottom, margin = 8.dp)
                     linkTo(parent.start, parent.end)
                     width = Dimension.preferredWrapContent
                 })
 
-
             Text(
-                text = "Toleo Namba: ${manager.versionName}",
-                modifier = Modifier.constrainAs(textVersion) {
-                    top.linkTo(textAppName.bottom, margin = 8.dp)
-                    linkTo(parent.start, parent.end)
-                    width = Dimension.preferredWrapContent
-                })
-
-            Text(text = "Imeundwa na \"Zacharia Mwihechi\"",
+                text = "Imeundwa na \"Zacharia Mwihechi\"",
                 modifier = Modifier.constrainAs(textDeveloperInfo) {
                     linkTo(parent.start, parent.end)
                     bottom.linkTo(parent.bottom)
-                })
+                },
+                fontWeight = FontWeight.Light
+            )
         }
     }
 
