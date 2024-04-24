@@ -3,7 +3,7 @@ buildscript {
         compose_version = '1.2.0-rc02'
     }
     dependencies {
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.40.1'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.38.1'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
@@ -12,6 +12,6 @@ plugins {
     id 'org.jetbrains.kotlin.android' version '1.6.21' apply false
 }
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.layout.buildDirectory
 }
