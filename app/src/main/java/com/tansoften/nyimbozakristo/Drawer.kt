@@ -22,38 +22,38 @@ sealed class DrawerScreens(
     val title: String,
     val icon: ImageVector
 ) {
-    object AllSongScreen : DrawerScreens(
+    data object AllSongScreen : DrawerScreens(
         route = "all_song_screen",
         title = "Nyimbo",
         icon = Icons.Rounded.Home
     )
 
-    object SplashScreen : DrawerScreens(
+    data object SplashScreen : DrawerScreens(
         route = "nyimbo_splash_screen",
         title = "Splash Screen",
         icon = Icons.Default.Splitscreen
     )
 
-    object LovedSong : DrawerScreens(
+    data object LovedSong : DrawerScreens(
         route = "loved_song_screen",
         title = "Nyimbo Pendwa",
         icon = Icons.Rounded.Favorite
     )
 
-    object SettingScreen :
+    data object SettingScreen :
         DrawerScreens(route = "setting_screen", title = "Mipangilio", icon = Icons.Rounded.Settings)
 
-    object AboutScreen :
+    data object AboutScreen :
         DrawerScreens(route = "about_screen", title = "Kuhusu", icon = Icons.Rounded.Info)
 
-    object ShareScreen :
+    data object ShareScreen :
         DrawerScreens(route = "share_screen", title = "Sambaza app", icon = Icons.Rounded.Share)
 
-    object CategoryScreen :
+    data object CategoryScreen :
         DrawerScreens(route = "category_screen", title = "Yaliyomo", icon = Icons.Rounded.Category)
 
 
-    object VerseScreen : DrawerScreens(
+    data object VerseScreen : DrawerScreens(
         route = "verse_screen/{$VERSE_ARGUMENT_KEY}/{$LOVE_ARGUMENT_KEY}",
         title = "Verses Screen",
         icon = Icons.Rounded.FavoriteBorder

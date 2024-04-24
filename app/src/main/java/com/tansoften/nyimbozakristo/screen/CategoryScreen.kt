@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +23,7 @@ fun CategoryScreen(navController: NavHostController) {
     Column(modifier = Modifier.fillMaxSize()) {
         DefaultAppBar(
             title = "Yaliyomo",
-            buttonIcon = Icons.Filled.ArrowBack,
+            buttonIcon = Icons.AutoMirrored.Filled.ArrowBack,
             onButtonClicked = { navController.navigate(DrawerScreens.AllSongScreen.route) })
 
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

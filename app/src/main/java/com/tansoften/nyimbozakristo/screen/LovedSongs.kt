@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -35,7 +35,7 @@ fun LovedSongsScreen(
     Column(modifier = Modifier.fillMaxSize()) {
         DefaultAppBar(
             title = "Nyimbo Pendwa",
-            buttonIcon = Icons.Filled.ArrowBack,
+            buttonIcon = Icons.AutoMirrored.Filled.ArrowBack,
             onButtonClicked = { navController.navigate(DrawerScreens.AllSongScreen.route) })
         Content(songs = songs, viewModel = viewModel, navController = navController)
     }
@@ -57,9 +57,10 @@ fun Content(songs: List<Songs>?, viewModel: SongsViewModel, navController: NavHo
                 }
 
             }
+
             songs.isNotEmpty() -> {
                 LazyColumn {
-                    itemsIndexed(songs) {index, song ->
+                    itemsIndexed(songs) { index, song ->
                         SongsCard(
                             song = song,
                             viewModel = viewModel,

@@ -3,18 +3,36 @@ package com.tansoften.nyimbozakristo.screen
 import android.content.Context
 import android.content.Intent
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.FormatSize
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.twotone.Favorite
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,16 +43,13 @@ import androidx.compose.ui.unit.sp
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
+import androidx.compose.foundation.pager.HorizontalPager
 import com.tansoften.nyimbozakristo.APP_URL
 import com.tansoften.nyimbozakristo.DrawerScreens
 import com.tansoften.nyimbozakristo.item.Songs
 import com.tansoften.nyimbozakristo.storage.SortOrder
 import com.tansoften.nyimbozakristo.ui.theme.LikeColor
 import com.tansoften.nyimbozakristo.view_model.VersesViewModel
-import kotlinx.coroutines.flow.collect
 import kotlin.math.roundToInt
 
 
@@ -65,7 +80,8 @@ fun VerseScreen(
                 }
 
             }
-            lovedVerses.isNotEmpty() -> {
+
+            else -> {
                 Content(
                     navController = navController,
                     page = page,
@@ -120,7 +136,7 @@ fun VerseScreen(
 
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Content(
     navController: NavController,
@@ -130,8 +146,8 @@ fun Content(
     fontSize: Int,
     pagerSize: Int,
 ) {
-    val pagerState = rememberPagerState()
-    var pageNo by remember { mutableStateOf(0) }
+    val pagerState = androidx.compose.foundation.pager.rememberPagerState(pageCount = {verse.size})
+    var pageNo by remember { mutableIntStateOf(0) }
     val openDialogCustom = remember { mutableStateOf(false) }
     val context = LocalContext.current
 
@@ -154,7 +170,7 @@ fun Content(
             },
             navigationIcon = {
                 IconButton(onClick = { navController.navigate(DrawerScreens.AllSongScreen.route) }) {
-                    Icon(Icons.Filled.ArrowBack, "Menu")
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "Menu")
                 }
             },
             backgroundColor = MaterialTheme.colors.primary,
@@ -191,7 +207,6 @@ fun Content(
 
 
         HorizontalPager(
-            count = pagerSize,
             state = pagerState,
             modifier = Modifier
                 .fillMaxSize()

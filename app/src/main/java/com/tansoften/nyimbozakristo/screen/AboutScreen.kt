@@ -12,7 +12,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,7 +41,7 @@ fun AboutScreen(navController: NavController) {
     Column(modifier = Modifier.fillMaxSize()) {
         DefaultAppBar(
             title = "Kuhusu",
-            buttonIcon = Icons.Filled.ArrowBack,
+            buttonIcon = Icons.AutoMirrored.Filled.ArrowBack,
             onButtonClicked = { navController.navigate(DrawerScreens.AllSongScreen.route) })
 
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
