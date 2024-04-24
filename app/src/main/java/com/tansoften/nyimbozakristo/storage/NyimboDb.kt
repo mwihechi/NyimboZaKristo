@@ -6,7 +6,7 @@ import com.tansoften.nyimbozakristo.dao.SongsDao
 import com.tansoften.nyimbozakristo.item.Songs
 
 
-@Database(entities = [Songs::class], version = 1)
+@Database(entities = [Songs::class], version = 2, exportSchema = false)
 abstract class NyimboDb : RoomDatabase() {
     abstract fun songsDao(): SongsDao
 }

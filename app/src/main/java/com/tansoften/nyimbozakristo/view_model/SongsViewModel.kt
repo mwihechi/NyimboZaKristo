@@ -9,6 +9,7 @@ import com.tansoften.nyimbozakristo.storage.NyimboDb
 import com.tansoften.nyimbozakristo.storage.PreferencesManager
 import com.tansoften.nyimbozakristo.storage.SortOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -17,6 +18,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
+@OptIn(ExperimentalCoroutinesApi::class)
 class SongsViewModel @Inject constructor(
     private val db: NyimboDb,
     private val preferencesManager: PreferencesManager
@@ -31,8 +33,8 @@ class SongsViewModel @Inject constructor(
     ) { query, filterPreferences ->
         Pair(query, filterPreferences)
     }
-        .flatMapLatest { (_query, filterPreferences) ->
-            db.songsDao().getAllSongs(_query, filterPreferences.sortOrder)
+        .flatMapLatest { (query, filterPreferences) ->
+            db.songsDao().getAllSongs(query, filterPreferences.sortOrder)
         }
 
     fun sortOrderSelected(sortOrder: SortOrder) = viewModelScope.launch {

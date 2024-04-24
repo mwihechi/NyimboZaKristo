@@ -7,19 +7,20 @@ import com.tansoften.nyimbozakristo.item.Songs
 import com.tansoften.nyimbozakristo.storage.NyimboDb
 import com.tansoften.nyimbozakristo.storage.PreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
+@OptIn(ExperimentalCoroutinesApi::class)
 class VersesViewModel @Inject constructor(
     private val db: NyimboDb,
     private val preferencesManager: PreferencesManager
 ) : ViewModel() {
 
     private val sortOrderPreferences = preferencesManager.preferencesFlow
-
     private val versesFlow = combine(
         sortOrderPreferences
     ) { filterPreferences ->
