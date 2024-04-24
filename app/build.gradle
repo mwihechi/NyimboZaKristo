@@ -94,7 +94,7 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:1.1.1"
 
     // ConstraintsLayout
-    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
     /*view pager, not official from google*/
     implementation "com.google.accompanist:accompanist-pager:0.22.0-rc"
