@@ -6,7 +6,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.tansoften.nyimbozakristo.screen.*
+import com.tansoften.nyimbozakristo.screen.AboutScreen
+import com.tansoften.nyimbozakristo.screen.AllSongsScreen
+import com.tansoften.nyimbozakristo.screen.CategoryScreen
+import com.tansoften.nyimbozakristo.screen.LovedSongsScreen
+import com.tansoften.nyimbozakristo.screen.SettingScreen
+import com.tansoften.nyimbozakristo.screen.SplashScreen
+import com.tansoften.nyimbozakristo.screen.VerseScreen
 
 @Composable
 fun NavigationHost(navController: NavHostController, openDrawer: () -> Unit) {

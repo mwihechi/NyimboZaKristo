@@ -26,7 +26,7 @@ class SettingViewModel @Inject constructor(private val preferencesManager: Prefe
     }
 
     val isScreenOn = preferencesManager.isScreenOnFlow.asLiveData()
-    fun updateIsScreenOn(isScreenOn : Boolean) = viewModelScope.launch {
+    fun updateIsScreenOn(isScreenOn: Boolean) = viewModelScope.launch {
         preferencesManager.updateScreenIsOn(isScreenOn = isScreenOn)
     }
 

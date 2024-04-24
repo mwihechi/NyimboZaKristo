@@ -25,7 +25,7 @@ class SongsViewModel @Inject constructor(
 ) : ViewModel() {
 
     val searchQuery = MutableStateFlow("")
-    val sortOrderPreferences = preferencesManager.preferencesFlow
+    private val sortOrderPreferences = preferencesManager.preferencesFlow
 
     private val songFlow = combine(
         searchQuery,

@@ -58,7 +58,7 @@ fun Content(songs: List<Songs>?, viewModel: SongsViewModel, navController: NavHo
 
             }
 
-            songs.isNotEmpty() -> {
+            else -> {
                 LazyColumn {
                     itemsIndexed(songs) { index, song ->
                         SongsCard(

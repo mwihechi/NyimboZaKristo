@@ -1,13 +1,24 @@
 package com.tansoften.nyimbozakristo
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Splitscreen
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.rounded.Category
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,7 +69,7 @@ sealed class DrawerScreens(
         title = "Verses Screen",
         icon = Icons.Rounded.FavoriteBorder
     ) {
-        fun passArgument(currentPage: Int, isLovedScreen: Boolean): String{
+        fun passArgument(currentPage: Int, isLovedScreen: Boolean): String {
             return "verse_screen/$currentPage/$isLovedScreen"
         }
     }
