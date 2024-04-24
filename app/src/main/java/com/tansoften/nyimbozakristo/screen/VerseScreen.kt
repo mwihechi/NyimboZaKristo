@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
@@ -43,7 +44,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.compose.foundation.pager.HorizontalPager
 import com.tansoften.nyimbozakristo.APP_URL
 import com.tansoften.nyimbozakristo.DrawerScreens
 import com.tansoften.nyimbozakristo.item.Songs
@@ -88,7 +88,6 @@ fun VerseScreen(
                     viewModel = viewModel,
                     verse = lovedVerses,
                     fontSize = fontSize,
-                    pagerSize = lovedVerses.size
                 )
             }
         }
@@ -106,8 +105,7 @@ fun VerseScreen(
                         page = page,
                         viewModel = viewModel,
                         verse = verse,
-                        fontSize = fontSize,
-                        pagerSize = 220
+                        fontSize = fontSize
                     )
                 }
 
@@ -120,16 +118,13 @@ fun VerseScreen(
                         page = page,
                         viewModel = viewModel,
                         verse = verseSorted,
-                        fontSize = fontSize,
-                        pagerSize = 220
+                        fontSize = fontSize
                     )
                 }
             }
         }
     }
 
-
-    // keep screen on
     if (isScreenOn == true) {
         KeepScreenOn()
     }
@@ -144,9 +139,9 @@ fun Content(
     viewModel: VersesViewModel,
     verse: List<Songs>,
     fontSize: Int,
-    pagerSize: Int,
 ) {
-    val pagerState = androidx.compose.foundation.pager.rememberPagerState(pageCount = {verse.size})
+    val pagerState =
+        androidx.compose.foundation.pager.rememberPagerState(pageCount = { verse.size })
     var pageNo by remember { mutableIntStateOf(0) }
     val openDialogCustom = remember { mutableStateOf(false) }
     val context = LocalContext.current
