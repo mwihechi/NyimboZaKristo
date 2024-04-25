@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +25,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.mwihechi.nyimbozakristo.DrawerScreens
+import com.mwihechi.nyimbozakristo.component.AppAppBar
+import com.mwihechi.nyimbozakristo.component.DrawerScreens
 import com.mwihechi.nyimbozakristo.R
 
 
@@ -39,10 +40,10 @@ fun AboutScreen(navController: NavController) {
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        DefaultAppBar(
+        AppAppBar(
             title = "Kuhusu",
             buttonIcon = Icons.AutoMirrored.Filled.ArrowBack,
-            onButtonClicked = { navController.navigate(DrawerScreens.AllSongScreen.route) })
+            onBackButtonClick = { navController.navigate(DrawerScreens.AllSongScreen.route) })
 
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (imageVector, textVersion, textDeveloperInfo) = createRefs()
@@ -57,7 +58,7 @@ fun AboutScreen(navController: NavController) {
                         top.linkTo(topGuideLine)
                     },
                 shape = CircleShape,
-                color = MaterialTheme.colors.background,
+                color = MaterialTheme.colorScheme.surface,
                 border = BorderStroke(width = 2.dp, color = Color.LightGray)
             ) {
                 Icon(
@@ -87,8 +88,6 @@ fun AboutScreen(navController: NavController) {
     }
 
 }
-
-//Text(text = "Toleo Namba: ${manager.versionName}")
 
 @Preview(showBackground = true)
 @Composable

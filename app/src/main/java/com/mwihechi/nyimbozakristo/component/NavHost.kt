@@ -1,4 +1,4 @@
-package com.mwihechi.nyimbozakristo
+package com.mwihechi.nyimbozakristo.component
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -6,6 +6,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.mwihechi.nyimbozakristo.component.DrawerScreens
+import com.mwihechi.nyimbozakristo.component.LOVE_ARGUMENT_KEY
+import com.mwihechi.nyimbozakristo.component.VERSE_ARGUMENT_KEY
 import com.mwihechi.nyimbozakristo.screen.AboutScreen
 import com.mwihechi.nyimbozakristo.screen.AllSongsScreen
 import com.mwihechi.nyimbozakristo.screen.CategoryScreen

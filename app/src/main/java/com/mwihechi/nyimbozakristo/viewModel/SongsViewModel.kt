@@ -1,4 +1,5 @@
-package com.mwihechi.nyimbozakristo.view_model
+package com.mwihechi.nyimbozakristo.viewModel
+
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -6,35 +7,40 @@ import androidx.lifecycle.viewModelScope
 import com.mwihechi.nyimbozakristo.item.Songs
 import com.mwihechi.nyimbozakristo.storage.NyimboDb
 import com.mwihechi.nyimbozakristo.storage.PreferencesManager
+import com.mwihechi.nyimbozakristo.storage.SortOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @HiltViewModel
 @OptIn(ExperimentalCoroutinesApi::class)
-class VersesViewModel @Inject constructor(
+class SongsViewModel @Inject constructor(
     private val db: NyimboDb,
     private val preferencesManager: PreferencesManager
 ) : ViewModel() {
 
+    val searchQuery = MutableStateFlow("")
     private val sortOrderPreferences = preferencesManager.preferencesFlow
-    private val versesFlow = combine(
+
+    private val songFlow = combine(
+        searchQuery,
         sortOrderPreferences
-    ) { filterPreferences ->
-        filterPreferences
+    ) { query, filterPreferences ->
+        Pair(query, filterPreferences)
     }
-        .flatMapLatest { (filterPreferences) ->
-            db.songsDao().getAllVerse(filterPreferences.sortOrder)
+        .flatMapLatest { (query, filterPreferences) ->
+            db.songsDao().getAllSongs(query, filterPreferences.sortOrder)
         }
 
-    val verses = versesFlow.asLiveData()
-    val lovedVerses = db.songsDao().getLikedSongs()
-    val fontSize = preferencesManager.fontSizeFlow.asLiveData()
-    val sortOrder = sortOrderPreferences.asLiveData()
-    val isScreenOn = preferencesManager.isScreenOnFlow.asLiveData()
+    fun sortOrderSelected(sortOrder: SortOrder) = viewModelScope.launch {
+        preferencesManager.updateSortOrder(sortOrder)
+    }
+
 
     fun onLikeChecked(song: Songs) = viewModelScope.launch {
         when (song.like) {
@@ -43,8 +49,10 @@ class VersesViewModel @Inject constructor(
         }
     }
 
-    //update font size
-    fun updateFontSize(fontSize: Float) = viewModelScope.launch {
-        preferencesManager.updateFontSize(fontSize)
-    }
+    val songs = songFlow.asLiveData()
+
+    val lovedSongs = db.songsDao().getLikedSongs()
+
+    val songSorted = sortOrderPreferences.asLiveData()
+
 }

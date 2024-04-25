@@ -78,7 +78,7 @@ class PreferencesManager @Inject constructor(@ApplicationContext private val con
         }
 
     // retrieving value of isScreeOn
-    val isScreenOnFlow = context.dataStore.data
+    val keepScreenOnFlow = context.dataStore.data
         .catch { exception ->
             if (exception is IOException) {
                 Log.e(TAG, "Error while reading preferences ", exception)

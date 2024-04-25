@@ -13,23 +13,25 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.SortByAlpha
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.twotone.Favorite
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -40,11 +42,13 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.mwihechi.nyimbozakristo.DrawerScreens
+import com.mwihechi.nyimbozakristo.component.DrawerScreens
+import com.mwihechi.nyimbozakristo.constant.APP_NAME
 import com.mwihechi.nyimbozakristo.item.Songs
 import com.mwihechi.nyimbozakristo.storage.SortOrder
 import com.mwihechi.nyimbozakristo.ui.theme.LikeColor
-import com.mwihechi.nyimbozakristo.view_model.SongsViewModel
+import com.mwihechi.nyimbozakristo.ui.theme.md_theme_light_primary
+import com.mwihechi.nyimbozakristo.viewModel.SongsViewModel
 
 
 @Composable
@@ -56,7 +60,6 @@ fun AllSongsScreen(
 ) {
     val songs = viewModel.songs.observeAsState().value
     val activity = (LocalContext.current as? Activity)
-
     BackHandler {
         activity?.finish()
     }
@@ -88,6 +91,7 @@ fun AllSongsScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBarAllSong(
     onButtonClicked: () -> Unit,
@@ -98,14 +102,20 @@ fun AppBarAllSong(
 
     TopAppBar(
         title = {
-            Text(text = "Nyimbo Za Kristo")
+            Text(text = APP_NAME)
         },
         navigationIcon = {
             IconButton(onClick = { onButtonClicked() }) {
                 Icon(Icons.Filled.Menu, "Menu")
             }
         },
-        backgroundColor = MaterialTheme.colors.primary,
+        colors = TopAppBarColors(
+            containerColor = md_theme_light_primary,
+            scrolledContainerColor = md_theme_light_primary,
+            navigationIconContentColor = Color.White,
+            titleContentColor = Color.White,
+            actionIconContentColor = Color.White
+        ),
         actions = {
             if (sortOrderPreference != null) {
                 IconButton(onClick = {
@@ -125,7 +135,6 @@ fun AppBarAllSong(
 }
 
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SongsCard(
     song: Songs,
@@ -172,7 +181,7 @@ fun SongsCard(
                 textAlign = TextAlign.Center,
 
                 modifier = Modifier
-                    .background(MaterialTheme.colors.background, shape = CircleShape)
+                    .background(MaterialTheme.colorScheme.background, shape = CircleShape)
                     .constrainAs(textNo) {
                         linkTo(parent.start, firstGuideLine)
                         top.linkTo(parent.top)

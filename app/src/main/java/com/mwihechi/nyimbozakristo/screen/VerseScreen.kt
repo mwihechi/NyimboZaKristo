@@ -14,17 +14,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.FormatSize
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.twotone.Favorite
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -44,12 +47,15 @@ import androidx.compose.ui.unit.sp
 import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.mwihechi.nyimbozakristo.APP_URL
-import com.mwihechi.nyimbozakristo.DrawerScreens
+import com.mwihechi.nyimbozakristo.constant.APP_URL
+import com.mwihechi.nyimbozakristo.component.DrawerScreens
+import com.mwihechi.nyimbozakristo.component.KeepScreenOn
+import com.mwihechi.nyimbozakristo.constant.APP_NAME
 import com.mwihechi.nyimbozakristo.item.Songs
 import com.mwihechi.nyimbozakristo.storage.SortOrder
 import com.mwihechi.nyimbozakristo.ui.theme.LikeColor
-import com.mwihechi.nyimbozakristo.view_model.VersesViewModel
+import com.mwihechi.nyimbozakristo.ui.theme.md_theme_light_primary
+import com.mwihechi.nyimbozakristo.viewModel.VersesViewModel
 import kotlin.math.roundToInt
 
 
@@ -64,7 +70,7 @@ fun VerseScreen(
     val verse = viewModel.verses.observeAsState().value
     val sortOrderPreference = viewModel.sortOrder.observeAsState().value
     val font = viewModel.fontSize.observeAsState().value
-    val isScreenOn = viewModel.isScreenOn.observeAsState().value
+    val keepScreenOn = viewModel.keepScreenOn.observeAsState().value
     val lovedVerses = viewModel.lovedVerses.observeAsState().value
 
     if (isLovedScreen && lovedVerses != null && font != null) {
@@ -125,13 +131,13 @@ fun VerseScreen(
         }
     }
 
-    if (isScreenOn == true) {
+    if (keepScreenOn == true) {
         KeepScreenOn()
     }
 
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun Content(
     navController: NavController,
@@ -158,7 +164,7 @@ fun Content(
         TopAppBar(
             title = {
                 Text(
-                    text = "Nyimbo Za Kristo",
+                    text = APP_NAME,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -168,7 +174,6 @@ fun Content(
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, "Menu")
                 }
             },
-            backgroundColor = MaterialTheme.colors.primary,
             actions = {
                 IconButton(onClick = { openDialogCustom.value = true }) {
                     Icon(Icons.Filled.FormatSize, "Font size")
@@ -182,7 +187,14 @@ fun Content(
                 IconButton(onClick = { shareVerses(verse[pageNo], context) }) {
                     Icon(Icons.Filled.Share, "Share Icon")
                 }
-            }
+            },
+            colors = TopAppBarColors(
+                containerColor = md_theme_light_primary,
+                scrolledContainerColor = md_theme_light_primary,
+                navigationIconContentColor = Color.White,
+                titleContentColor = Color.White,
+                actionIconContentColor = Color.White
+            ),
         )
 
         Spacer(modifier = Modifier.height(4.dp))
@@ -190,7 +202,7 @@ fun Content(
             text = "${verse[pageNo].songs_id}-${verse[pageNo].title}",
             textAlign = TextAlign.Center,
             color = LikeColor,
-            style = MaterialTheme.typography.h1,
+            style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(4.dp))
@@ -231,7 +243,7 @@ fun Content(
 
 fun shareVerses(songs: Songs, context: Context) {
     val text = HtmlCompat.fromHtml(songs.verse_text, HtmlCompat.FROM_HTML_MODE_COMPACT)
-    val appText = "Pakua app yetu ya Nyimbo Za Kristo kwa Nyimbo zaidi. \r\n $APP_URL"
+    val appText = "Pakua app yetu ya $APP_NAME kwa Nyimbo zaidi. \r\n $APP_URL"
 
     val sendIntent: Intent = Intent().apply {
         action = Intent.ACTION_SEND

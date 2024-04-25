@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.mwihechi.nyimbozakristo.DrawerScreens
+import com.mwihechi.nyimbozakristo.component.DrawerScreens
 import com.mwihechi.nyimbozakristo.R
 import kotlinx.coroutines.delay
 
@@ -56,7 +56,7 @@ fun SplashScreen(navController: (NavHostController)) {
                     linkTo(parent.top, parent.bottom)
                 },
             shape = CircleShape,
-            color = MaterialTheme.colors.background,
+            color = MaterialTheme.colorScheme.background,
             border = BorderStroke(width = 2.dp, color = Color.LightGray)
         ) {
 

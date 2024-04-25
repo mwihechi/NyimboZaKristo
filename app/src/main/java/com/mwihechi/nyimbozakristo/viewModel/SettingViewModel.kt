@@ -1,4 +1,4 @@
-package com.mwihechi.nyimbozakristo.view_model
+package com.mwihechi.nyimbozakristo.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -25,7 +25,7 @@ class SettingViewModel @Inject constructor(private val preferencesManager: Prefe
         preferencesManager.updateFontStyle(fontStyle)
     }
 
-    val isScreenOn = preferencesManager.isScreenOnFlow.asLiveData()
+    val isScreenOn = preferencesManager.keepScreenOnFlow.asLiveData()
     fun updateIsScreenOn(isScreenOn: Boolean) = viewModelScope.launch {
         preferencesManager.updateScreenIsOn(isScreenOn = isScreenOn)
     }

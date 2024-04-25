@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -16,9 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.mwihechi.nyimbozakristo.DrawerScreens
+import com.mwihechi.nyimbozakristo.component.AppAppBar
+import com.mwihechi.nyimbozakristo.component.DrawerScreens
 import com.mwihechi.nyimbozakristo.item.Songs
-import com.mwihechi.nyimbozakristo.view_model.SongsViewModel
+import com.mwihechi.nyimbozakristo.viewModel.SongsViewModel
 
 @Composable
 fun LovedSongsScreen(
@@ -33,10 +34,10 @@ fun LovedSongsScreen(
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        DefaultAppBar(
+        AppAppBar(
             title = "Nyimbo Pendwa",
             buttonIcon = Icons.AutoMirrored.Filled.ArrowBack,
-            onButtonClicked = { navController.navigate(DrawerScreens.AllSongScreen.route) })
+            onBackButtonClick = { navController.navigate(DrawerScreens.AllSongScreen.route) })
         Content(songs = songs, viewModel = viewModel, navController = navController)
     }
 
