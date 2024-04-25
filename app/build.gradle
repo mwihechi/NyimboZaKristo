@@ -9,7 +9,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.tansoften.nyimbozakristo"
+        applicationId "com.mwihechi.nyimbozakristo"
         minSdk 23
         targetSdk 34
         versionCode 1
@@ -47,7 +47,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
-    namespace 'com.tansoften.nyimbozakristo'
+    namespace 'com.mwihechi.nyimbozakristo'
 }
 
 dependencies {
